@@ -30,7 +30,7 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
-          tags: ghcr.io/${{ toLower(github.repository_owner) }}/datronyx-website/frontend:latest
+          tags: ghcr.io/rahulkumarsahdepp/datronyx-website/frontend:latest
 
       # --- Build and Push Backend ---
       - name: 🏗️ Build and Push Backend Image
@@ -39,7 +39,7 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ghcr.io/${{ toLower(github.repository_owner) }}/datronyx-website/backend:latest
+          tags: ghcr.io/rahulkumarsahdepp/datronyx-website/backend:latest
 
       # --- Build and Push Nginx ---
       - name: 🏗️ Build and Push Nginx Image
@@ -48,4 +48,4 @@ jobs:
           context: .
           file: ./nginx/Dockerfile
           push: true
-          tags: ghcr.io/${{ toLower(github.repository_owner) }}/datronyx-website/nginx:latest
+          tags: ghcr.io/rahulkumarsahdepp/datronyx-website/nginx:latest
