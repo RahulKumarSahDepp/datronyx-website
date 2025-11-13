@@ -46,7 +46,8 @@ jobs:
       - name: 🏗️ Build and Push Nginx Image
         uses: docker/build-push-action@v5
         with:
-          context: ./nginx
-          file: ./nginx/Dockerfile
-          push: true
-          tags: ghcr.io/rahulkumarsahdepp/datronyx-website/nginx:latest
+            context: ./nginx      # <-- folder containing Dockerfile AND default.conf
+            file: ./nginx/Dockerfile
+            push: true
+            tags: ghcr.io/rahulkumarsahdepp/datronyx-website/nginx:latest
+
