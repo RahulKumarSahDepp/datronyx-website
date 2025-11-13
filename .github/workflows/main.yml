@@ -28,11 +28,12 @@ jobs:
       - name: 🏗️ Build and Push Frontend Image
         uses: docker/build-push-action@v5
         with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
-          push: true
-          platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/rahulkumarsahdepp/datronyx-website/frontend:latest
+            context: ./frontend
+            file: ./frontend/Dockerfile
+            push: true
+            platforms: linux/amd64,linux/arm64   # << Add this line
+            tags: ghcr.io/rahulkumarsahdepp/datronyx-website/frontend:latest
+
 
       # --- Build and Push Backend ---
       - name: 🏗️ Build and Push Backend Image
