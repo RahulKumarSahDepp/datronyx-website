@@ -31,6 +31,7 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ghcr.io/rahulkumarsahdepp/datronyx-website/frontend:latest
 
       # --- Build and Push Backend ---
@@ -40,6 +41,7 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ghcr.io/rahulkumarsahdepp/datronyx-website/backend:latest
 
       # --- Build and Push Nginx ---
