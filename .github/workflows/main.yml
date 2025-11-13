@@ -1,14 +1,9 @@
-name: 🚀 Build and Push Docker Images to GHCR
+name: 🚀 Build and Push to GHCR
 
 on:
   push:
-    branches:
-      - main  # 👈 Change this if your main branch is named differently (e.g., master)
-
-permissions:
-  contents: read
-  packages: write   # 👈 Required to push to GHCR
-  id-token: write
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build-and-push:
@@ -46,7 +41,7 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository }}/backend:latest
 
-      # --- Build and Push Nginx (Reverse Proxy) ---
+      # --- Build and Push Nginx ---
       - name: 🏗️ Build and Push Nginx Image
         uses: docker/build-push-action@v5
         with:
