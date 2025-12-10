@@ -4,15 +4,15 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-// font setup 
+// Font setup 
 const font = Inter({
   weight: ['100', '200', '300', '400', '500', '600', '700'],
   subsets: ['latin'],
 })
 
-//  metadata 
+// Metadata 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.datronyx.com"),
+  metadataBase: new URL("https://datronyx.com"), // Standardized to non-www or www based on preference
   title: {
     default: "Datronyx | Data Analytics, Data Engineering & AI Solutions",
     template: "%s | Datronyx"
@@ -36,10 +36,11 @@ export const metadata: Metadata = {
     description: 
       "Datronyx transforms raw data into intelligent systems. We offer advanced data analytics, data engineering, predictive modeling, AI development, and intelligence layers built for scale.",
     url: "https://datronyx.com",
-    siteName:  "Datronyx",
+    siteName: "Datronyx",
     images: [
       {
-        url: "./public/Datronyx_Logo.png", 
+        // FIX: Remove './public' - Next.js serves public folder at root
+        url: "/Datronyx_Logo.png", 
         width: 1200,
         height: 630,
         alt: "Datronyx – AI, ML & Data Science"
@@ -53,7 +54,7 @@ export const metadata: Metadata = {
     title: "Datronyx – AI, ML & Data Science",
     description:
       "Datronyx transforms raw data into intelligent systems. We offer advanced data analytics, data engineering, predictive modeling, AI development, and intelligence layers built for scale.",
-    images: ["/og-image.png"]
+    images: ["/Datronyx_Logo.png"] // Updated to use the logo as fallback if no specific OG image exists
   },
   authors: [{ name: "Datronyx Team" }],
   creator: "Datronyx",
@@ -67,36 +68,42 @@ export const metadata: Metadata = {
     }
   },
   icons: {
-    icon: "/icon.png",
-    apple: "/apple-icon.png"
+    // Ensure these files exist in your 'public' folder
+    icon: "/Datronyxlogo.png",
+    apple: "/Datronyxlogo.png" 
   }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // Schema for Google Search (SEO)
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Datronyx",
+    "url": "https://datronyx.com",
+    "logo": "https://datronyx.com/Datronyxlogo.png",
+    "description": "Datronyx provides enterprise-grade data analytics, AI, ML, and data engineering solutions.",
+    "sameAs": [
+      "https://www.linkedin.com/company/datronyx",
+      "https://twitter.com/datronyx"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "info@datronyx.com",
+      "contactType": "customer support"
+    }
+  };
+
   return (
      <html lang="en">
       <body className={`${font.className} bg-primary text-light flex flex-col min-h-screen`}>
         
         <Navbar />
 
-        {/*  GLOBAL JSON-LD  */}
+        {/* GOOGLE SCHEMA MARKUP */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "Datronyx",
-              url: "https://datronyx.com",
-              logo: "https://datronyx.com/Datronyx_Logo.png",
-              description:
-                "Datronyx provides enterprise-grade data analytics, AI, ML, and data engineering solutions.",
-              sameAs: [
-                "https://www.linkedin.com/company/datronyx",
-                "https://twitter.com/datronyx"
-              ]
-            }),
-          }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 
         {/* Main content area */}
