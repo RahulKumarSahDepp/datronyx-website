@@ -4,61 +4,61 @@ import React from 'react';
 import Link from 'next/link';
 import { motion, Variants } from 'framer-motion';
 import { 
-  Rocket, 
+  Zap, 
   ShieldCheck, 
-  BrainCircuit, 
-  Microscope, 
+  Cpu, 
+  Scaling, 
   ArrowRight, 
-  Gem, 
-  Layers
+  Users, 
+  Trophy,
+  Lock
 } from 'lucide-react';
 
 // --- DATA: THE "UNFAIR ADVANTAGE" ---
-const benefits = [
+const advantages = [
   {
-    id: "velocity",
-    title: "Market Velocity",
-    subtitle: "Speed to Insight",
-    description: "Traditional analytics take months. We deploy MVP pipelines in weeks. Get answers while your competitors are still setting up meetings.",
-    icon: Rocket,
-    color: "from-amber-500 to-orange-500",
-    colSpan: "md:col-span-2 lg:col-span-2", // Bento Grid: Wide Card
+    id: "speed",
+    tag: "Speed",
+    title: "Deployment Velocity",
+    metric: "4x Faster",
+    metricDesc: "Time-to-insight vs. in-house teams",
+    description: "Don't wait 6 months for a dashboard. We deploy MVP decision engines in weeks, not quarters.",
+    icon: Zap,
+    gradient: "from-amber-400 to-orange-500",
+    bgClass: "md:col-span-2", // Wide Card
   },
   {
-    id: "security",
+    id: "risk",
+    tag: "Security",
     title: "Fortress Governance",
-    subtitle: "Zero-Trust Architecture",
-    description: "We don't extract your data; we fortify it. Our solutions operate entirely within your secure environment, ensuring absolute compliance.",
-    icon: ShieldCheck,
-    color: "from-emerald-500 to-teal-500",
-    colSpan: "md:col-span-1 lg:col-span-1",
+    metric: "ISO 27001",
+    metricDesc: "Bank-grade compliance standards",
+    description: "Your data never leaves your environment. We build secure pipelines inside your walls.",
+    icon: Lock,
+    gradient: "from-emerald-400 to-teal-500",
+    bgClass: "md:col-span-1", // Square Card
   },
   {
-    id: "precision",
-    title: "Precision Engineering",
-    subtitle: "Custom AI Models",
-    description: "Generic models hallucinate. We train bespoke AI agents on *your* specific data topology for 99.9% relevance.",
-    icon: Microscope,
-    color: "from-cyan-500 to-blue-500",
-    colSpan: "md:col-span-1 lg:col-span-1",
-  },
-  {
-    id: "scale",
-    title: "Infinite Scalability",
-    subtitle: "Cloud Native",
-    description: "Built on serverless architectures that auto-scale from 100 to 100 million requests without you lifting a finger.",
-    icon: Layers,
-    color: "from-violet-500 to-purple-500",
-    colSpan: "md:col-span-2 lg:col-span-2",
+    id: "quality",
+    tag: "Accuracy",
+    title: "Precision AI",
+    metric: "99.9%",
+    metricDesc: "Model relevance on proprietary data",
+    description: "Generic models hallucinate. We train bespoke agents on your specific data topology.",
+    icon: Cpu,
+    gradient: "from-blue-400 to-indigo-500",
+    bgClass: "md:col-span-1", // Square Card
   },
   {
     id: "talent",
-    title: "Elite Squads",
-    subtitle: "Top 1% Talent",
-    description: "Stop hiring freelancers. Access a pre-vetted, cohesive unit of Senior Data Architects and ML Engineers instantly.",
-    icon: Gem,
-    color: "from-pink-500 to-rose-500",
-    colSpan: "md:col-span-3 lg:col-span-3", // Full Width
+    tag: "Expertise",
+    title: "The Top 1%",
+    metric: "Sen. Only",
+    metricDesc: "No juniors. No learning on your dime.",
+    description: "Access a cohesive unit of Senior Architects and ML Engineers who have solved this problem 50+ times.",
+    icon: Users,
+    gradient: "from-fuchsia-400 to-pink-500",
+    bgClass: "md:col-span-2", // Wide Card
   },
 ];
 
@@ -67,110 +67,109 @@ const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { 
     opacity: 1, 
-    transition: { staggerChildren: 0.1 } 
+    transition: { staggerChildren: 0.15 } 
   },
 };
 
 const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  hidden: { opacity: 0, y: 20, scale: 0.98 },
   visible: { 
     opacity: 1, 
     y: 0, 
     scale: 1, 
-    transition: { duration: 0.5, ease: "easeOut" } 
+    transition: { type: "spring", stiffness: 100, damping: 20 } 
   },
 };
 
-// --- COMPONENT: BENTO CARD ---
-const BenefitCard = ({ item }: { item: typeof benefits[0] }) => {
+// --- COMPONENT: ADVANTAGE CARD ---
+const AdvantageCard = ({ item }: { item: typeof advantages[0] }) => {
   const Icon = item.icon;
 
   return (
     <motion.div
       variants={cardVariants}
-      className={`group relative overflow-hidden rounded-3xl border border-slate-800 bg-[#0B0F19] ${item.colSpan}`}
+      className={`relative group overflow-hidden rounded-[2rem] border border-white/10 bg-[#0B0F19] p-8 ${item.bgClass} hover:border-white/20 transition-colors duration-500`}
     >
-      {/* 1. Dynamic Hover Gradient Background */}
-      <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 bg-gradient-to-br ${item.color}`} />
-      
-      {/* 2. Top "Circuit" Line Decoration */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-slate-700 to-transparent group-hover:via-white/20 transition-colors" />
+      {/* 1. Subtle Gradient Glow on Hover */}
+      <div className={`absolute -right-20 -top-20 w-64 h-64 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-10 blur-[80px] rounded-full transition-opacity duration-500 pointer-events-none`} />
 
-      <div className="relative h-full p-8 flex flex-col z-10">
+      <div className="relative z-10 h-full flex flex-col justify-between">
         
-        {/* Header Section */}
-        <div className="flex items-start justify-between mb-6">
-           <div className={`p-3 rounded-2xl bg-gradient-to-br ${item.color} shadow-lg shadow-black/50 group-hover:scale-110 transition-transform duration-300`}>
+        {/* Header */}
+        <div className="flex justify-between items-start mb-6">
+           <div className={`w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/5 group-hover:scale-110 transition-transform duration-300`}>
               <Icon className="w-6 h-6 text-white" strokeWidth={1.5} />
            </div>
-           <span className="text-xs font-bold uppercase tracking-widest text-slate-600 group-hover:text-slate-400 transition-colors border border-slate-800 rounded-full px-3 py-1">
-             {item.subtitle}
+           <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/5 bg-white/5 text-slate-400`}>
+             {item.tag}
            </span>
         </div>
 
-        {/* Content Section */}
-        <div className="mt-auto">
-          <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-400 transition-all">
+        {/* The "Hero" Metric */}
+        <div className="mb-6">
+            <h4 className={`text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r ${item.gradient} mb-2 tracking-tight`}>
+                {item.metric}
+            </h4>
+            <p className="text-sm font-mono text-slate-500 uppercase tracking-wide border-l-2 border-white/10 pl-3">
+                {item.metricDesc}
+            </p>
+        </div>
+
+        {/* Content */}
+        <div>
+          <h3 className="text-xl font-bold text-white mb-2 group-hover:text-slate-200 transition-colors">
             {item.title}
           </h3>
-          <p className="text-slate-400 text-base leading-relaxed group-hover:text-slate-300 transition-colors">
+          <p className="text-slate-400 text-sm leading-relaxed max-w-md">
             {item.description}
           </p>
         </div>
 
-        {/* Decorative 'Shine' effect on hover */}
-        <div className="absolute -right-12 -bottom-12 w-48 h-48 bg-white/5 rounded-full blur-[60px] opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none" />
       </div>
     </motion.div>
   );
 };
 
-export default function BenefitsSection() {
+export default function WhyDatronyx() {
   return (
-    <section className="relative w-full py-24 md:py-32 overflow-hidden bg-[#020617]">
+    <section className="relative w-full py-24 md:py-32 bg-[#020617] overflow-hidden">
       
       {/* --- BACKGROUND FX --- */}
-      {/* Hexagon Mesh Pattern */}
-      <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }}
-      />
-      
-      {/* Deep Glows */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-900/10 blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px]" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-6xl mx-auto px-4 md:px-8 relative z-10">
         
         {/* --- HEADER --- */}
-        <div className="text-center mb-20 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full bg-slate-900 border border-slate-700 backdrop-blur-md">
-             <BrainCircuit size={14} className="text-emerald-400" />
-             <span className="text-xs font-bold tracking-widest text-slate-400 uppercase">The Competitive Edge</span>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-2 mb-4">
+                <Trophy size={16} className="text-amber-400" />
+                <span className="text-xs font-bold text-amber-400 uppercase tracking-widest">The Datronyx Edge</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+              Stop settling for <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-orange-200 to-yellow-200">
+                average analytics.
+              </span>
+            </h2>
           </div>
           
-          <h2 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-            Why Visionaries Choose <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400">
-              Datronyx.
-            </span>
-          </h2>
-          <p className="text-xl text-slate-400 leading-relaxed">
-            We don't just "handle data." We engineer <span className="text-white font-semibold">intelligence moats</span> that put your business years ahead of the market.
+          <p className="text-slate-400 text-lg max-w-sm md:text-right">
+             We bridge the gap between "messy data" and "profitable decisions" faster than anyone else.
           </p>
         </div>
 
-        {/* --- BENTO GRID --- */}
+        {/* --- BENTO GRID LAYOUT --- */}
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-3 gap-5"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-50px" }}
         >
-          {benefits.map((item) => (
-             <BenefitCard key={item.id} item={item} />
+          {advantages.map((item) => (
+             <AdvantageCard key={item.id} item={item} />
           ))}
         </motion.div>
 
@@ -180,20 +179,20 @@ export default function BenefitsSection() {
            whileInView={{ opacity: 1, y: 0 }}
            viewport={{ once: true }}
            transition={{ delay: 0.4 }}
-           className="mt-20 flex flex-col items-center"
+           className="mt-16 flex justify-center"
         >
-            <div className="p-1 rounded-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 shadow-[0_0_40px_rgba(16,185,129,0.3)] hover:shadow-[0_0_60px_rgba(16,185,129,0.5)] transition-shadow duration-500">
-              <Link
-                href="/contact"
-                className="flex items-center gap-3 px-10 py-4 bg-[#020617] rounded-full text-white font-bold text-lg hover:bg-slate-900 transition-colors"
-              >
-                Claim Your Advantage
-                <ArrowRight size={20} className="text-emerald-400" />
-              </Link>
+          <Link
+            href="/contact"
+            className="group relative inline-flex items-center gap-3 px-8 py-4 bg-white rounded-xl text-slate-900 font-bold text-lg hover:bg-slate-200 transition-all active:scale-95"
+          >
+            <span>Start Your Transformation</span>
+            <div className="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                <ArrowRight size={16} className="text-white" />
             </div>
-            <p className="mt-4 text-sm text-slate-500 font-mono">
-                Limited availability for Q3 2025 Architecture Reviews.
-            </p>
+            
+            {/* Glow Effect */}
+            <div className="absolute -inset-1 rounded-xl blur opacity-20 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:opacity-40 transition-opacity duration-500" />
+          </Link>
         </motion.div>
 
       </div>

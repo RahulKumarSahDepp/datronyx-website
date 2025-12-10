@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link"; // Imported Link
 import { motion } from "framer-motion";
 import { 
   ServerCrash, 
@@ -10,7 +11,10 @@ import {
   Workflow,     
   ShieldAlert,  
   Activity,
-  ArrowRight
+  ArrowRight,
+  XCircle,
+  CheckCircle2,
+  Zap
 } from "lucide-react";
 
 // --- Types ---
@@ -180,6 +184,125 @@ const ProblemCard = ({ icon: Icon, title, desc, riskLevel, theme, index }: Probl
   );
 };
 
+// --- NEW: Transformation Bridge Component ---
+const TransformationBridge = () => {
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.4 }}
+      className="mt-24 relative"
+    >
+      {/* Glowing Backdrop */}
+      <div className="absolute inset-0 bg-indigo-600/20 blur-[100px] rounded-full opacity-50 pointer-events-none" />
+
+      {/* Main Container */}
+      <div className="relative bg-[#020410] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+        
+        {/* Top Decorative Border Gradient */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500/50 via-gray-700 to-indigo-500" />
+
+        <div className="grid grid-cols-1 lg:grid-cols-11 gap-0 lg:gap-8 p-8 lg:p-12 items-center">
+          
+          {/* LEFT: The Pain Points (Current State) */}
+          <div className="lg:col-span-4 space-y-6 relative z-10">
+             <div className="flex items-center gap-3 mb-6">
+                <span className="text-xs font-mono uppercase text-red-400 tracking-widest bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">
+                  Current State
+                </span>
+             </div>
+             <h3 className="text-2xl font-bold text-gray-300">Operational Friction</h3>
+             
+             <ul className="space-y-4">
+                <li className="flex items-start gap-3 opacity-60 group hover:opacity-100 transition-opacity">
+                   <XCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                   <span className="text-sm text-gray-400">Reactive decision making based on gut feeling</span>
+                </li>
+                <li className="flex items-start gap-3 opacity-60 group hover:opacity-100 transition-opacity">
+                   <XCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                   <span className="text-sm text-gray-400">Data bottlenecks slowing down product launches</span>
+                </li>
+                <li className="flex items-start gap-3 opacity-60 group hover:opacity-100 transition-opacity">
+                   <XCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                   <span className="text-sm text-gray-400">High maintenance costs for legacy pipelines</span>
+                </li>
+             </ul>
+          </div>
+
+          {/* CENTER: The Transformation Engine (Visual Divider) */}
+          <div className="lg:col-span-3 flex flex-col items-center justify-center py-8 lg:py-0 relative">
+             {/* Animated Arrow Connector */}
+             <div className="hidden lg:flex items-center justify-center w-full relative">
+                 <div className="absolute w-full h-px bg-gradient-to-r from-red-900/50 to-indigo-900/50" />
+                 <div className="relative z-10 w-16 h-16 rounded-full bg-[#0A0D1E] border border-white/10 flex items-center justify-center shadow-[0_0_30px_rgba(79,70,229,0.3)]">
+                    <motion.div 
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                      className="absolute inset-0 rounded-full border-t border-indigo-500 opacity-50"
+                    />
+                    <ArrowRight className="text-white w-6 h-6" />
+                 </div>
+             </div>
+             
+             {/* Mobile Arrow */}
+             <ArrowRight className="lg:hidden text-gray-600 w-8 h-8 rotate-90 my-4" />
+          </div>
+
+          {/* RIGHT: The Datronyx Solution (Future State) */}
+          <div className="lg:col-span-4 space-y-6 relative z-10">
+             <div className="flex items-center gap-3 mb-6">
+                <span className="text-xs font-mono uppercase text-indigo-400 tracking-widest bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
+                  Datronyx Standard
+                </span>
+             </div>
+             <h3 className="text-2xl font-bold text-white">Autonomous Intelligence</h3>
+             
+             <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                   <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                   <span className="text-sm text-gray-300">Predictive modeling <span className="text-indigo-400">before</span> revenue dips</span>
+                </li>
+                <li className="flex items-start gap-3">
+                   <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                   <span className="text-sm text-gray-300">Unified Data Lakehouse for <span className="text-indigo-400">single-source truth</span></span>
+                </li>
+                <li className="flex items-start gap-3">
+                   <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                   <span className="text-sm text-gray-300">Automated governance & <span className="text-indigo-400">self-healing pipelines</span></span>
+                </li>
+             </ul>
+          </div>
+
+        </div>
+
+        {/* BOTTOM: Action Bar */}
+        <div className="bg-indigo-950/20 border-t border-white/5 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+                <div className="p-2 bg-indigo-500/20 rounded-lg">
+                    <Zap className="text-indigo-400 w-5 h-5 fill-current" />
+                </div>
+                <div>
+                    <p className="text-white font-medium text-sm">Ready to upgrade your infrastructure?</p>
+                    <p className="text-gray-500 text-xs">Free architecture audit included.</p>
+                </div>
+            </div>
+
+            <Link href="/contact" className="group relative px-8 py-3 bg-white text-black font-bold rounded-lg overflow-hidden transition-all hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-indigo-100 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
+                <span className="relative flex items-center gap-2">
+                    Initiate Transformation
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+            </Link>
+        </div>
+
+      </div>
+    </motion.div>
+  );
+};
+
+
 export default function IndustryProblems() {
   const darkBg = "#0A0D1E";
 
@@ -239,32 +362,8 @@ export default function IndustryProblems() {
           ))}
         </div>
 
-        {/* --- The Resolution Bridge (Footer) --- */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-          className="mt-20 relative p-1 rounded-3xl bg-gradient-to-r from-indigo-500/30 via-purple-500/30 to-indigo-500/30"
-        >
-          <div className="bg-gray-950 rounded-[22px] py-12 px-6 md:px-12 text-center relative overflow-hidden">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-indigo-500/10 blur-3xl pointer-events-none" />
-            
-            <div className="relative z-10">
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                We turn these liabilities <span className="text-blue-700 font-extrabold">into assets.</span>
-              </h3>
-              <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
-                Datronyx architects solutions that ensure your data becomes scalable, reliable, and a primary driver of revenue.
-              </p>
-              
-              <button className="group inline-flex items-center justify-center text-indigo-300 font-bold hover:text-white transition-colors">
-                <span className="border-b border-indigo-500/50 group-hover:border-white pb-1">Let's have Talk</span>
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-          </div>
-        </motion.div>
+        {/* --- The New Stunning CTA (Transformation Bridge) --- */}
+        <TransformationBridge />
 
       </div>
     </section>

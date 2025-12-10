@@ -1,82 +1,88 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { motion, Variants } from "framer-motion";
 import { 
-  Binary, 
-  BoxSelect, 
-  GitPullRequest, 
-  Fingerprint, 
-  Scale, 
-  Eye, 
-  Terminal
+  Unlock, 
+  Search, 
+  Target, 
+  ShieldCheck, 
+  TrendingUp, 
+  Layers,
+  ArrowRight
 } from 'lucide-react';
 
-// --- STRATEGIC CONTENT: ENGINEERING PHILOSOPHIES ---
+// --- DATA: HONEST & VIBRANT ---
 const coreValues = [
   {
     id: "01",
-    title: "Deterministic Precision",
-    subtitle: "Accuracy > Speed",
-    description: "In data science, 'close enough' is a failure. We architect pipelines that prioritize data integrity and mathematical exactitude over shortcuts.",
-    icon: Binary,
-    color: "from-blue-500 to-indigo-500",
-    border: "group-hover:border-blue-500/50",
-    shadow: "group-hover:shadow-blue-500/20"
+    title: "You Own The Code",
+    subtitle: "No Vendor Lock-In",
+    description: "Most agencies hold your IP hostage. We don't. We build it, deploy it, and hand over the keys. It's your data, your infrastructure, your asset.",
+    icon: Unlock,
+    gradientTitle: "from-emerald-400 to-teal-300",
+    iconColor: "text-emerald-400",
+    glow: "group-hover:shadow-[0_0_30px_-5px_rgba(52,211,153,0.3)]",
+    border: "group-hover:border-emerald-500/50"
   },
   {
     id: "02",
-    title: "White-Box Intelligence",
+    title: "No 'Black Box' Magic",
     subtitle: "Explainable AI",
-    description: "We reject black boxes.  We engineer transparent models where every decision path is traceable, auditable, and fully explainable.",
-    icon: Eye,
-    color: "from-emerald-500 to-teal-500",
-    border: "group-hover:border-emerald-500/50",
-    shadow: "group-hover:shadow-emerald-500/20"
+    description: "If our AI recommends a decision, we tell you exactly why. We build transparent systems that your auditors and investors can actually understand.",
+    icon: Search,
+    gradientTitle: "from-blue-400 to-indigo-300",
+    iconColor: "text-blue-400",
+    glow: "group-hover:shadow-[0_0_30px_-5px_rgba(96,165,250,0.3)]",
+    border: "group-hover:border-blue-500/50"
   },
   {
     id: "03",
-    title: "Sovereign Infrastructure",
-    subtitle: "You Own Everything",
-    description: "No vendor lock-in. No hidden IP. We build systems that belong to you, ensuring your data moat remains your competitive advantage.",
-    icon: Fingerprint,
-    color: "from-purple-500 to-fuchsia-500",
-    border: "group-hover:border-purple-500/50",
-    shadow: "group-hover:shadow-purple-500/20"
+    title: "Business First",
+    subtitle: "ROI Focused",
+    description: "We don't use 'cool' tech just because it's trendy. We only build what directly drives revenue or cuts costs for your specific business model.",
+    icon: Target,
+    gradientTitle: "from-amber-400 to-orange-300",
+    iconColor: "text-amber-400",
+    glow: "group-hover:shadow-[0_0_30px_-5px_rgba(251,191,36,0.3)]",
+    border: "group-hover:border-amber-500/50"
   },
   {
     id: "04",
-    title: "Anti-Fragile Systems",
-    subtitle: "Resilience Engineering",
-    description: "We design for failure. Our architectures use self-healing ETL pipelines and redundant nodes to thrive under stress and volatility.",
-    icon: BoxSelect,
-    color: "from-amber-500 to-orange-500",
-    border: "group-hover:border-amber-500/50",
-    shadow: "group-hover:shadow-amber-500/20"
+    title: "Bank-Grade Security",
+    subtitle: "Zero-Trust",
+    description: "We treat your data like a vault. Security isn't an 'add-on' we charge extra for; it's baked into the foundation of every line of code we write.",
+    icon: ShieldCheck,
+    gradientTitle: "from-rose-400 to-red-300",
+    iconColor: "text-rose-400",
+    glow: "group-hover:shadow-[0_0_30px_-5px_rgba(251,113,133,0.3)]",
+    border: "group-hover:border-rose-500/50"
   },
   {
     id: "05",
-    title: "Modular Scalability",
-    subtitle: "Composable Tech",
-    description: "We avoid monolithic traps. Using microservices and containerization, we build fluid systems that scale horizontally as you grow.",
-    icon: GitPullRequest,
-    color: "from-cyan-500 to-sky-500",
-    border: "group-hover:border-cyan-500/50",
-    shadow: "group-hover:shadow-cyan-500/20"
+    title: "We Don't Guess",
+    subtitle: "Precision Engineering",
+    description: "In finance and healthcare, 'close enough' is dangerous. We build deterministic pipelines that give you exact numbers, not rough estimates.",
+    icon: TrendingUp,
+    gradientTitle: "from-cyan-400 to-sky-300",
+    iconColor: "text-cyan-400",
+    glow: "group-hover:shadow-[0_0_30px_-5px_rgba(34,211,238,0.3)]",
+    border: "group-hover:border-cyan-500/50"
   },
   {
     id: "06",
-    title: "Ethical Alignment",
-    subtitle: "Responsible AI",
-    description: "We embed bias detection and ethical guardrails into the foundation of every model, ensuring your AI scales safely and fairly.",
-    icon: Scale,
-    color: "from-rose-500 to-pink-500",
-    border: "group-hover:border-rose-500/50",
-    shadow: "group-hover:shadow-rose-500/20"
+    title: "Scale When Ready",
+    subtitle: "Modular Growth",
+    description: "Don't over-build. We create modular systems. Start with a lean MVP today, and expand to millions of users tomorrow without rewriting.",
+    icon: Layers,
+    gradientTitle: "from-fuchsia-400 to-purple-300",
+    iconColor: "text-fuchsia-400",
+    glow: "group-hover:shadow-[0_0_30px_-5px_rgba(232,121,249,0.3)]",
+    border: "group-hover:border-fuchsia-500/50"
   },
 ];
 
-// --- ANIMATION VARIANTS ---
+// --- ANIMATION ---
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -86,44 +92,58 @@ const containerVariants: Variants = {
 };
 
 const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: { duration: 0.5, ease: "easeOut" },
   },
 };
 
-export default function CoreDNASection() {
+export default function CoreValuesSection() {
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden bg-[#020617]">
+    <section className="relative py-24 md:py-32 bg-[#020617] overflow-hidden">
       
-      {/* --- BACKGROUND FX --- */}
-      {/* Circuit Pattern */}
-      <div 
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%236366f1' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`,
-        }}
-      />
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-900/10 blur-[120px] rounded-full pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* Background Ambience */}
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-indigo-900/50 to-transparent" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/10 via-[#020617] to-[#020617]" />
+      
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         
         {/* --- HEADER --- */}
-        <div className="text-center mb-20 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full bg-slate-900 border border-slate-700 backdrop-blur-md">
-             <Terminal size={14} className="text-indigo-400" />
-             <span className="text-xs font-bold tracking-widest text-slate-400 uppercase">System Protocols</span>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+          <div className="max-w-2xl">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-3 mb-4"
+            >
+               <div className="h-0.5 w-8 bg-indigo-500" />
+               <span className="text-indigo-400 font-mono text-xs font-bold tracking-widest uppercase">The Datronyx Promise</span>
+            </motion.div>
+            
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-4xl md:text-5xl font-bold text-white leading-tight"
+            >
+              Honest Engineering. <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-200 to-slate-500">
+                No Hype. Just Results.
+              </span>
+            </motion.h2>
           </div>
-          
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-6">
-            The <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-blue-400 to-cyan-400">Datronyx DNA.</span>
-          </h2>
-          <p className="text-xl text-slate-400 leading-relaxed">
-            We don't operate on vague promises. We operate on a strict code of engineering excellence, transparency, and architectural rigor.
-          </p>
+
+          <motion.p 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-slate-400 text-lg max-w-md md:text-right leading-relaxed font-light"
+          >
+            We operate on a strict code of transparency. You deserve to know exactly what you're paying for and how it works.
+          </motion.p>
         </div>
 
         {/* --- GRID --- */}
@@ -132,7 +152,7 @@ export default function CoreDNASection() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-50px" }}
         >
           {coreValues.map((value, index) => {
             const Icon = value.icon;
@@ -142,50 +162,56 @@ export default function CoreDNASection() {
                 key={index}
                 variants={cardVariants}
                 className={`
-                  group relative p-8 h-full bg-[#0B0F19] border border-slate-800 rounded-3xl 
-                  overflow-hidden transition-all duration-500 
-                  ${value.border} hover:bg-slate-900 ${value.shadow}
+                  group relative p-8 h-full bg-[#0B0F19] rounded-3xl border border-white/5 
+                  transition-all duration-300 hover:-translate-y-1
+                  ${value.border} ${value.glow}
                 `}
               >
-                {/* 1. Laser Scan Effect (Top to Bottom) */}
-                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-white/5 to-transparent -translate-y-full group-hover:translate-y-full transition-transform duration-1000 ease-in-out pointer-events-none" />
-
-                {/* 2. Top Bar Accent */}
-                <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${value.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-
-                {/* 3. Tech Corners (Brackets) */}
-                <div className="absolute top-4 left-4 w-2 h-2 border-t border-l border-slate-700 group-hover:border-indigo-500 transition-colors" />
-                <div className="absolute top-4 right-4 w-2 h-2 border-t border-r border-slate-700 group-hover:border-indigo-500 transition-colors" />
-                <div className="absolute bottom-4 left-4 w-2 h-2 border-b border-l border-slate-700 group-hover:border-indigo-500 transition-colors" />
-                <div className="absolute bottom-4 right-4 w-2 h-2 border-b border-r border-slate-700 group-hover:border-indigo-500 transition-colors" />
+                {/* 1. Subtle Inner Gradient on Hover */}
+                <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl pointer-events-none" />
 
                 {/* Header */}
-                <div className="flex items-center justify-between mb-6">
-                  {/* Icon Box */}
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-slate-950 border border-slate-800 group-hover:border-slate-600 transition-colors relative`}>
-                    <Icon className="text-white relative z-10" size={20} />
-                    {/* Icon Glow */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${value.color} opacity-0 group-hover:opacity-20 blur-md transition-opacity duration-300 rounded-xl`} />
+                <div className="relative z-10 flex justify-between items-start mb-6">
+                  {/* Icon Container */}
+                  <div className={`
+                    w-12 h-12 rounded-xl flex items-center justify-center 
+                    bg-slate-900 border border-white/10 shadow-inner
+                    group-hover:scale-110 transition-transform duration-300
+                  `}>
+                    <Icon className={value.iconColor} size={22} strokeWidth={1.5} />
                   </div>
-                  
-                  {/* ID Number */}
-                  <span className="font-mono text-xs font-bold text-slate-600 group-hover:text-slate-400 transition-colors">
-                    //{value.id}
+
+                  {/* ID / Subtitle Pill */}
+                  <span className={`
+                    text-[10px] font-bold uppercase tracking-widest py-1.5 px-3 rounded-full 
+                    bg-white/5 text-slate-400 border border-white/5 
+                    group-hover:bg-white/10 group-hover:text-white transition-colors
+                  `}>
+                    {value.subtitle}
                   </span>
                 </div>
 
-                {/* Text Content */}
+                {/* Content */}
                 <div className="relative z-10">
-                  <span className={`text-xs font-bold uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r ${value.color} mb-2 block`}>
-                    {value.subtitle}
-                  </span>
-                  <h3 className="text-xl font-bold text-white mb-4 group-hover:translate-x-1 transition-transform duration-300">
+                  <h3 className={`text-xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r ${value.gradientTitle}`}>
                     {value.title}
                   </h3>
-                  <p className="text-slate-400 text-sm leading-relaxed group-hover:text-slate-300 transition-colors">
+                  
+                  <p className="text-slate-400 text-sm leading-relaxed mb-6 group-hover:text-slate-300 transition-colors">
                     {value.description}
                   </p>
+                  
+                  {/* Decorative Line */}
+                  <div className="w-full h-px bg-gradient-to-r from-white/10 to-transparent group-hover:from-white/20 transition-colors" />
                 </div>
+
+                {/* 2. Abstract Geometric Decor (Bottom Right) */}
+                <div className="absolute bottom-0 right-0 p-6 opacity-0 group-hover:opacity-10 transition-opacity duration-500">
+                    <ArrowRight className={value.iconColor} size={24} />
+                </div>
+                
+
+[Image of data pipeline architecture diagram]
 
               </motion.div>
             );

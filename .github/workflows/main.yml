@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: ⬇ Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: 🐳 Log in to GitHub Container Registry (ghcr.io)
@@ -31,7 +31,7 @@ jobs:
             context: ./frontend
             file: ./frontend/Dockerfile
             push: true
-            platforms: linux/amd64,linux/arm64   # << Add this line
+            platforms: linux/amd64,linux/arm64 
             tags: ghcr.io/rahulkumarsahdepp/datronyx-website/frontend:latest
 
 
@@ -52,6 +52,6 @@ jobs:
             context: ./nginx
             file: ./nginx/Dockerfile
             push: true
-            platforms: linux/amd64,linux/arm64   # <-- Add this line
+            platforms: linux/amd64,linux/arm64 
             tags: ghcr.io/rahulkumarsahdepp/datronyx-website/nginx:latest
 

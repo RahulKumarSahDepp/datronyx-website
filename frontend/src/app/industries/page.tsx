@@ -1,12 +1,10 @@
-import HeroSection from '@/components/HeroSection';
-import CapabilitiesSection from '@/components/CapabilitiesSection';
 import IndustryPage from '@/components/IndustryPage';
 import IndustriesHero from './components/HeroSection';
 import IndustryIntro from './components/introduction';
 import IndustriesPage from './components/IndustriesSection';
 import FAQSection from '@/components/FaqSection';
-import TechStackSlide from '@/components/TechStackSlide';
 import SectionSeparator from '@/components/SectionSeparator';
+import IndustryCTA from './components/IndustryCTA';
 
 export default function ServicesPage() {
   const jsonLd = {
@@ -31,11 +29,10 @@ export default function ServicesPage() {
         }}
       />
       <IndustriesHero/>
-      <CapabilitiesSection/>
+      <IndustryIntro/>
       <IndustryPage />
       <IndustriesPage/>
-      <IndustryIntro/>
-      <TechStackSlide/>
+      <IndustryCTA />
       <SectionSeparator/>
       <FAQSection/>
     </main>

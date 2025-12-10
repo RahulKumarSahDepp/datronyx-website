@@ -1,299 +1,382 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion, Variants } from "framer-motion";
+import React, { useState } from "react";
+import Link from "next/link";
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, 
-  Database,    // Data (Left)
-  BrainCircuit,// Intelligence (Top)
-  Rocket,      // Action (Bottom-Left)
-  Lightbulb,   // New: Insights (Bottom-Right)
-  PlayCircle,
-  Sparkles
+  Layers, 
+  Code, 
+  Cpu, 
+  BarChart3, 
+  Database, 
+  Zap,
+  CheckCircle2,
+  TerminalSquare,
+  Server,
+  Activity,
+  GitCommit,
+  Globe,
+  Lock
 } from "lucide-react";
 
-// --- Background Components (Scoped) ---
-
-const StarBackground = () => {
-  const [stars, setStars] = useState<{ id: number; top: string; left: string; size: number; opacity: number }[]>([]);
-
-  useEffect(() => {
-    const starCount = 40; 
-    const newStars = Array.from({ length: starCount }).map((_, i) => ({
-      id: i,
-      top: `${Math.random() * 100}%`,
-      left: `${Math.random() * 100}%`,
-      size: Math.random() * 2 + 1,
-      opacity: Math.random() * 0.5 + 0.3,
-    }));
-    setStars(newStars);
-  }, []);
-
+// --- 1. BACKGROUND: THE DIGITAL RAIN ---
+const CircuitFlow = () => {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      {stars.map((star) => (
-        <motion.div
-          key={star.id}
-          className="absolute bg-blue-100 rounded-full"
-          style={{ top: star.top, left: star.left, width: star.size, height: star.size, opacity: star.opacity }}
-          animate={{ opacity: [star.opacity, 1, star.opacity] }}
-          transition={{ duration: Math.random() * 3 + 2, repeat: Infinity, ease: "easeInOut" }}
-        />
-      ))}
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+       {/* Dark Gradient Base */}
+       <div className="absolute inset-0 bg-[#020617]" />
+       
+       {/* Vertical Data Lines */}
+       <div className="absolute inset-0 opacity-20" 
+            style={{ 
+                backgroundImage: 'linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px)', 
+                backgroundSize: '40px 40px',
+                transform: 'perspective(500px) rotateX(60deg) scale(1.5)'
+            }} 
+       />
+
+       {/* Moving Packets */}
+       {[...Array(5)].map((_, i) => (
+         <motion.div
+            key={i}
+            className="absolute w-[2px] h-[100px] bg-gradient-to-b from-transparent via-cyan-400 to-transparent"
+            style={{ left: `${15 + i * 20}%` }}
+            animate={{ top: ["-10%", "120%"], opacity: [0, 1, 0] }}
+            transition={{ 
+                duration: 3 + Math.random() * 2, 
+                repeat: Infinity, 
+                ease: "linear",
+                delay: i * 0.5 
+            }}
+         />
+       ))}
     </div>
   );
 };
 
-const TechnicalGrid = () => (
-  <div className="absolute inset-0 pointer-events-none z-0">
-    <div 
-      className="absolute inset-0 opacity-[0.05]" // Opacity set to 4%
-      style={{
-        backgroundImage: `linear-gradient(to right, #6366f1 1px, transparent 1px), linear-gradient(to bottom, #6366f1 1px, transparent 1px)`,
-        backgroundSize: '50px 50px' 
-      }}
-    />
-  </div>
-);
+// --- 2. COMPONENT: THE ISOMETRIC STACK ---
+const IsometricStack = ({ showCode }: { showCode: boolean }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
-const VintageOverlay = () => (
-  <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
-    {/* Noise - Increased intensity */}
-    <div className="absolute inset-0 opacity-[0.08] mix-blend-overlay">
-      <svg className="w-full h-full"><filter id="noiseFilterHero"><feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#noiseFilterHero)" /></svg>
-    </div>
-    
-    {/* Scanlines */}
-    <div 
-        className="absolute inset-0 opacity-[0.03] mix-blend-overlay" 
-        style={{
-          background: "linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.5))",
-          backgroundSize: "100% 3px"
-        }}
-    />
+  // Smooth spring animation for tilt
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [15, -15]), { stiffness: 100, damping: 20 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-15, 15]), { stiffness: 100, damping: 20 });
 
-    {/* Stronger Vignette */}
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#050a1f_100%)]" />
-  </div>
-);
-
-// --- Animation Variants ---
-
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
-    }
+  function handleMouseMove(e: React.MouseEvent) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    x.set((e.clientX - rect.left) / rect.width - 0.5);
+    y.set((e.clientY - rect.top) / rect.height - 0.5);
   }
-};
 
-const textVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: { duration: 0.8, ease: [0.2, 0.65, 0.3, 0.9] }
+  function handleMouseLeave() {
+    x.set(0);
+    y.set(0);
   }
-};
-
-// --- Sub-Component: The Orbiting Solution Visual ---
-
-const SolutionOrbit = () => {
-  return (
-    <div className="relative w-full h-[500px] lg:h-[600px] flex items-center justify-center perspective-1000">
-      
-      {/* 1. The Core (Central Intelligence Hub) */}
-      <div className="relative z-20"> 
-        <motion.div 
-          className="w-32 h-32 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 blur-2xl absolute inset-0 opacity-50"
-          animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <div className="w-32 h-32 rounded-full bg-gray-900 border border-indigo-500/30 flex items-center justify-center relative backdrop-blur-md shadow-[0_0_50px_rgba(99,102,241,0.3)]">
-           <Sparkles className="w-12 h-12 text-white" />
-        </div>
-      </div>
-
-      {/* 2. Orbiting Rings */}
-      {/* Adjusted sizes for 4 nodes, keeping the visual balance */}
-      {[1, 2, 3].map((ring, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full border border-indigo-500/10 z-10"
-          style={{ 
-            width: `${250 + i * 120}px`, // Slightly smaller inner ring
-            height: `${250 + i * 120}px`,
-            borderStyle: i === 1 ? "dashed" : "solid"
-          }}
-          animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
-          transition={{ duration: 40 + i * 10, repeat: Infinity, ease: "linear" }}
-        />
-      ))}
-
-      {/* 3. Floating Solution Nodes */}
-      
-      {/* Node 1: DATA (Left Side) */}
-      <motion.div
-        className="absolute w-24 h-24 bg-gray-900/80 border border-cyan-500/30 rounded-3xl backdrop-blur-xl flex flex-col items-center justify-center shadow-lg shadow-cyan-500/10 z-30"
-        animate={{ 
-          y: [-10, 10, -10],
-          x: [-200, -210, -200], 
-        }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        style={{ top: "40%" }} 
-      >
-        <Database className="w-9 h-9 text-cyan-400 mb-1" />
-        <span className="text-[11px] font-bold text-cyan-200 tracking-wider uppercase">Data</span>
-      </motion.div>
-
-      {/* Node 2: AI CORE (Top Center) */}
-      <motion.div
-        className="absolute w-24 h-24 bg-gray-900/80 border border-purple-500/30 rounded-3xl backdrop-blur-xl flex flex-col items-center justify-center shadow-lg shadow-purple-500/10 z-30"
-        animate={{ 
-          y: [-200, -210, -200], 
-          x: [-10, 10, -10], 
-        }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        style={{ left: "50%", marginLeft: "-48px" }} 
-      >
-        <BrainCircuit className="w-9 h-9 text-purple-400 mb-1" />
-        <span className="text-[11px] font-bold text-purple-200 tracking-wider uppercase">AI Core</span>
-      </motion.div>
-
-      {/* Node 3: ACTION (Bottom-Left Side) */}
-      <motion.div
-        className="absolute w-24 h-24 bg-gray-900/80 border border-emerald-500/30 rounded-3xl backdrop-blur-xl flex flex-col items-center justify-center shadow-lg shadow-emerald-500/10 z-30"
-        animate={{ 
-          y: [170, 180, 170], // Shifted to bottom-left area
-          x: [-120, -130, -120] 
-        }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        style={{ top: "50%" }} // Positioned relative to center
-      >
-        <Rocket className="w-9 h-9 text-emerald-400 mb-1" />
-        <span className="text-[11px] font-bold text-emerald-200 tracking-wider uppercase">Action</span>
-      </motion.div>
-
-      {/* Node 4: NEW - INSIGHTS (Bottom-Right Side) */}
-      <motion.div
-        className="absolute w-24 h-24 bg-gray-900/80 border border-orange-500/30 rounded-3xl backdrop-blur-xl flex flex-col items-center justify-center shadow-lg shadow-orange-500/10 z-30"
-        animate={{ 
-          y: [170, 180, 170], // Shifted to bottom-right area
-          x: [120, 130, 120] 
-        }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-        style={{ top: "50%" }} // Positioned relative to center
-      >
-        <Lightbulb className="w-9 h-9 text-orange-400 mb-1" />
-        <span className="text-[11px] font-bold text-orange-200 tracking-wider uppercase">Insights</span>
-      </motion.div>
-
-      {/* Connecting Lines */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40 z-10 overflow-visible">
-        <defs>
-            <linearGradient id="line-grad-1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#06b6d4" /><stop offset="100%" stopColor="#6366f1" /></linearGradient>
-            <linearGradient id="line-grad-2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#a855f7" /><stop offset="100%" stopColor="#6366f1" /></linearGradient>
-            <linearGradient id="line-grad-3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#10b981" /><stop offset="100%" stopColor="#6366f1" /></linearGradient>
-            <linearGradient id="line-grad-4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#f97316" /><stop offset="100%" stopColor="#6366f1" /></linearGradient> {/* New gradient for Insights */}
-        </defs>
-        
-        {/* Line 1: Data (Left) to Center */}
-        <line x1="20%" y1="50%" x2="50%" y2="50%" stroke="url(#line-grad-1)" strokeWidth="2" strokeDasharray="5,5" />
-        
-        {/* Line 2: AI (Top) to Center */}
-        <line x1="50%" y1="20%" x2="50%" y2="50%" stroke="url(#line-grad-2)" strokeWidth="2" strokeDasharray="5,5" />
-        
-        {/* Line 3: Action (Bottom-Left) to Center */}
-        <line x1="35%" y1="70%" x2="50%" y2="50%" stroke="url(#line-grad-3)" strokeWidth="2" strokeDasharray="5,5" />
-
-        {/* Line 4: NEW - Insights (Bottom-Right) to Center */}
-        <line x1="65%" y1="70%" x2="50%" y2="50%" stroke="url(#line-grad-4)" strokeWidth="2" strokeDasharray="5,5" />
-      </svg>
-
-    </div>
-  );
-}
-
-// --- Main Hero Component ---
-
-export default function SolutionsHero() {
-  const darkBg = "#050a1f"; 
 
   return (
-    <section 
-      className="relative w-full min-h-screen flex items-center overflow-hidden pt-20 lg:pt-0"
-      style={{ 
-        backgroundColor: darkBg,
-        filter: 'sepia(5%) contrast(105%)' // Global filter for vintage effect
-      }}
+    <motion.div 
+      className="relative w-full h-[600px] flex items-center justify-center perspective-[1000px] z-20 cursor-crosshair"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
     >
-      {/* --- Background Ambient Effects --- */}
-      <TechnicalGrid />
-      <StarBackground />
-      <VintageOverlay />
+      {/* Container for the Layers */}
+      <motion.div 
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        className="relative w-[340px] h-[420px] md:w-[400px] md:h-[500px]"
+      >
+        
+        {/* --- LAYER 1: BOTTOM (INFRASTRUCTURE) --- */}
+        <motion.div 
+           className="absolute inset-0 bg-[#0f172a]/95 border border-slate-700/80 rounded-xl shadow-2xl backdrop-blur-xl flex flex-col overflow-hidden group transition-all duration-500"
+           style={{ transform: "translateZ(-60px)" }}
+        >
+            {/* Header */}
+            <div className="flex justify-between items-center p-4 border-b border-slate-700/50 bg-slate-900/50">
+                <div className="flex items-center gap-2">
+                    <Server size={14} className="text-blue-400" />
+                    <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">L1 // Infrastructure</span>
+                </div>
+                <div className="flex gap-1">
+                    <div className="w-2 h-2 rounded-full bg-slate-700" />
+                    <div className="w-2 h-2 rounded-full bg-slate-700" />
+                </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-5 flex-1 relative">
+                 <AnimatePresence mode="wait">
+                    {showCode ? (
+                        <motion.div 
+                            key="tech-1"
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                            className="font-mono text-[10px] text-slate-400 space-y-3"
+                        >
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <div className="text-slate-600 uppercase text-[9px]">Region</div>
+                                    <div className="text-blue-300">us-east-1</div>
+                                </div>
+                                <div>
+                                    <div className="text-slate-600 uppercase text-[9px]">Uptime</div>
+                                    <div className="text-emerald-400">99.999%</div>
+                                </div>
+                                <div>
+                                    <div className="text-slate-600 uppercase text-[9px]">Latency</div>
+                                    <div className="text-blue-300">12ms <span className="text-slate-600">(avg)</span></div>
+                                </div>
+                                <div>
+                                    <div className="text-slate-600 uppercase text-[9px]">Throughput</div>
+                                    <div className="text-blue-300">4.2 GB/s</div>
+                                </div>
+                            </div>
+                            <div className="h-px bg-slate-800 w-full my-2" />
+                            <div className="flex items-center gap-2 text-slate-500">
+                                <Lock size={10} />
+                                <span>End-to-End Encryption: <span className="text-blue-400">AES-256</span></span>
+                            </div>
+                        </motion.div>
+                    ) : (
+                        <motion.div 
+                            key="viz-1"
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                            className="h-full flex items-center justify-center opacity-30"
+                        >
+                             <div className="grid grid-cols-4 gap-2 w-full">
+                                {[...Array(16)].map((_,i) => (
+                                    <div key={i} className="h-6 rounded bg-blue-500/20 animate-pulse border border-blue-500/10" style={{ animationDelay: `${i*0.05}s`}} />
+                                ))}
+                             </div>
+                        </motion.div>
+                    )}
+                 </AnimatePresence>
+            </div>
+        </motion.div>
+
+
+        {/* --- LAYER 2: MIDDLE (LOGIC/AI) --- */}
+        <motion.div 
+           className="absolute inset-0 bg-[#0B0F1A]/95 border border-indigo-500/40 rounded-xl shadow-[0_0_40px_rgba(99,102,241,0.15)] backdrop-blur-xl flex flex-col overflow-hidden"
+           style={{ transform: "translateZ(20px) scale(0.96)" }}
+        >
+             <div className="flex justify-between items-center p-4 border-b border-indigo-500/20 bg-indigo-950/20">
+                <div className="flex items-center gap-2">
+                    <Cpu size={14} className="text-indigo-400" />
+                    <span className="text-[10px] font-mono text-indigo-300/80 uppercase tracking-widest">L2 // Logic Core</span>
+                </div>
+                <Activity size={12} className="text-indigo-500 animate-pulse" />
+            </div>
+            
+            <div className="p-5 flex-1 relative flex items-center justify-center">
+                 <AnimatePresence mode="wait">
+                    {showCode ? (
+                         <motion.div 
+                            key="tech-2"
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                            className="w-full font-mono text-[10px] space-y-2"
+                        >
+                            <div className="flex justify-between text-indigo-300/50 mb-2">
+                                <span>EXECUTION_LOG</span>
+                                <span>PID: 8192</span>
+                            </div>
+                            <div className="bg-black/40 rounded p-2 border border-indigo-500/20 space-y-1">
+                                <p className="text-indigo-300"><span className="text-fuchsia-400">Input:</span> Vector_768xf</p>
+                                <p className="text-indigo-300"><span className="text-fuchsia-400">Model:</span> Transformer_XL</p>
+                                <p className="text-emerald-400">Confidence: 98.4%</p>
+                            </div>
+                            <div className="space-y-1 mt-2">
+                                <div className="flex justify-between text-[9px] text-indigo-400">
+                                    <span>Processing...</span>
+                                    <span>14ms</span>
+                                </div>
+                                <div className="h-1 w-full bg-indigo-900 rounded overflow-hidden">
+                                    <motion.div 
+                                        animate={{ width: ["10%", "90%"] }} 
+                                        transition={{ duration: 1.5, repeat: Infinity, ease: "circInOut" }} 
+                                        className="h-full bg-gradient-to-r from-indigo-500 to-fuchsia-500" 
+                                    />
+                                </div>
+                            </div>
+                        </motion.div>
+                    ) : (
+                        <motion.div 
+                            key="viz-2"
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                            className="relative w-28 h-28"
+                        >
+                            <motion.div animate={{ rotate: 360 }} transition={{ duration: 8, repeat: Infinity, ease: "linear" }} className="absolute inset-0 border border-dashed border-indigo-500/50 rounded-full" />
+                            <motion.div animate={{ rotate: -360 }} transition={{ duration: 12, repeat: Infinity, ease: "linear" }} className="absolute inset-4 border border-indigo-400/30 rounded-full" />
+                            
+                            {/* Neural Nodes */}
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="grid grid-cols-2 gap-2">
+                                    <div className="w-2 h-2 bg-indigo-400 rounded-full animate-ping" />
+                                    <div className="w-2 h-2 bg-fuchsia-400 rounded-full animate-ping delay-75" />
+                                    <div className="w-2 h-2 bg-indigo-400 rounded-full animate-ping delay-150" />
+                                    <div className="w-2 h-2 bg-fuchsia-400 rounded-full animate-ping delay-200" />
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                 </AnimatePresence>
+            </div>
+        </motion.div>
+
+        {/* --- LAYER 3: TOP (INTERFACE/VALUE) --- */}
+        <motion.div 
+           className="absolute inset-0 bg-slate-900/90 border border-emerald-500/40 rounded-xl shadow-[0_20px_60px_rgba(16,185,129,0.15)] backdrop-blur-xl flex flex-col overflow-hidden"
+           style={{ transform: "translateZ(100px) scale(0.92)" }}
+        >
+             <div className="flex justify-between items-center p-4 border-b border-emerald-500/20 bg-emerald-950/20">
+                <div className="flex items-center gap-2">
+                    <Globe size={14} className="text-emerald-400" />
+                    <span className="text-[10px] font-mono text-emerald-300/80 uppercase tracking-widest">L3 // Interface</span>
+                </div>
+                <div className="flex items-center gap-1 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="text-[9px] text-emerald-400 font-bold">LIVE</span>
+                </div>
+            </div>
+
+            <div className="p-5 flex-1 flex flex-col justify-center relative">
+                 <AnimatePresence mode="wait">
+                    {showCode ? (
+                         <motion.div 
+                            key="tech-3"
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                            className="font-mono text-[10px]"
+                        >
+                            <div className="text-emerald-600 mb-1">// API Response</div>
+                            <div className="text-slate-300 p-2 bg-black/40 rounded border border-emerald-500/10">
+                                <span className="text-fuchsia-400">{"{"}</span>
+                                <div className="pl-4">
+                                    <p>"status": <span className="text-emerald-400">"success"</span>,</p>
+                                    <p>"prediction": <span className="text-amber-300">4280.50</span>,</p>
+                                    <p>"action": <span className="text-cyan-300">"BUY"</span>,</p>
+                                    <p>"risk_score": <span className="text-emerald-400">0.02</span></p>
+                                </div>
+                                <span className="text-fuchsia-400">{"}"}</span>
+                            </div>
+                        </motion.div>
+                    ) : (
+                        <motion.div 
+                            key="viz-3"
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                            className="space-y-4"
+                        >
+                             <div className="flex justify-between items-end h-24 px-2">
+                                <div className="w-8 bg-emerald-500/20 rounded-t h-[40%]" />
+                                <div className="w-8 bg-emerald-500/40 rounded-t h-[60%]" />
+                                <div className="w-8 bg-emerald-500/30 rounded-t h-[50%]" />
+                                <div className="w-8 bg-gradient-to-t from-emerald-600 to-emerald-400 rounded-t h-[85%] relative group">
+                                    {/* Tooltip */}
+                                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white text-black text-[9px] font-bold px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                        +42%
+                                    </div>
+                                </div>
+                                <div className="w-8 bg-emerald-500/20 rounded-t h-[45%]" />
+                            </div>
+                            <div className="h-px w-full bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+        </motion.div>
+
+      </motion.div>
+    </motion.div>
+  );
+};
+
+// --- 3. MAIN HERO COMPONENT ---
+export default function SolutionsHeroUnique() {
+  const [isTechView, setIsTechView] = useState(false);
+
+  return (
+    <section className="relative w-full min-h-screen flex items-center bg-[#020617] overflow-hidden pt-24 pb-24 lg:pt-0 lg:pb-0">
       
-      {/* Custom ambient glows */}
-      <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-indigo-600/10 blur-[120px] rounded-full pointer-events-none z-0" />
-      <div className="absolute bottom-[-20%] left-[-10%] w-[700px] h-[700px] bg-cyan-600/10 blur-[120px] rounded-full pointer-events-none z-0" />
+      <CircuitFlow />
 
+      <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            
+            {/* --- LEFT: The Architect's Pitch --- */}
+            <div>
+                {/* Tech Toggle (Interactive Hook) */}
+                <div className="flex items-center gap-3 mb-8">
+                    <span className={`text-xs font-mono uppercase tracking-wider transition-colors ${!isTechView ? 'text-white font-bold' : 'text-slate-500'}`}>Business View</span>
+                    <button 
+                        onClick={() => setIsTechView(!isTechView)}
+                        className={`w-12 h-6 rounded-full p-1 transition-colors duration-300 ${isTechView ? 'bg-indigo-600' : 'bg-slate-700'}`}
+                    >
+                        <motion.div 
+                            className="w-4 h-4 bg-white rounded-full shadow-md"
+                            animate={{ x: isTechView ? 24 : 0 }}
+                        />
+                    </button>
+                    <span className={`text-xs font-mono uppercase tracking-wider transition-colors ${isTechView ? 'text-white font-bold' : 'text-slate-500'}`}>Technical View</span>
+                </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-30">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          
-          {/* --- LEFT: Typography & Content --- */}
-          <motion.div 
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-            className="max-w-2xl"
-          >
-            {/* Pill Badge */}
-            <motion.div variants={textVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 backdrop-blur-sm mb-8">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-              </span>
-              <span className="text-indigo-200 text-xs font-bold tracking-widest uppercase">
-                End-to-End Solutions
-              </span>
-            </motion.div>
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.05] tracking-tight mb-6">
+                    Solve the <br/>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
+                        Unsolvable.
+                    </span>
+                </h1>
 
-            {/* Headline */}
-            <motion.h1 variants={textVariants} className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] mb-6 tracking-tight">
-              Solutions That Turn Data Into <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Intelligence.</span>
-              <br />
-              Intelligence Into <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">Action.</span>
-            </motion.h1>
+                <p className="text-lg text-slate-400 mb-8 max-w-xl leading-relaxed">
+                    Complex problems require structured architecture, not just tools. We layer 
+                    <strong className="text-indigo-400"> intelligent data pipelines</strong> beneath 
+                    <strong className="text-emerald-400"> intuitive interfaces</strong> to transform how your business operates.
+                </p>
 
-            <motion.p variants={textVariants} className="text-lg md:text-xl text-gray-400 mb-10 leading-relaxed max-w-lg">
-              Datronyx delivers end-to-end, AI-driven solutions that help companies modernize their data stack, accelerate decision-making, and unlock measurable business outcomes.
-            </motion.p>
+                <div className="flex flex-wrap items-center gap-5">
+                    <Link href="/contact" className="px-8 py-4 bg-white text-slate-900 font-bold rounded-lg hover:bg-indigo-50 transition-colors flex items-center gap-2 group">
+                        Start Building
+                        <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform text-indigo-600" />
+                    </Link>
+                    
+                    <div className="px-6 py-4 border border-slate-700 rounded-lg text-slate-400 font-mono text-sm flex items-center gap-3">
+                        <TerminalSquare size={16} />
+                        <span>v2.4.0 Stable</span>
+                    </div>
+                </div>
 
-            <motion.div variants={textVariants} className="flex flex-col sm:flex-row gap-4">
-              <button className="group relative inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white transition-all duration-200 bg-indigo-600 font-pj rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 hover:bg-indigo-500 hover:shadow-[0_0_30px_-5px_rgba(99,102,241,0.6)] hover:-translate-y-1">
-                Explore Our Solutions
-                <ArrowRight className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
-              </button>
-              
-              <button className="group flex items-center justify-center px-8 py-4 bg-transparent border border-gray-700 text-white font-semibold rounded-full hover:border-white hover:bg-white/5 transition-all duration-300">
-                <PlayCircle className="w-5 h-5 mr-2 text-gray-400 group-hover:text-white transition-colors" />
-                Watch Demo
-              </button>
-            </motion.div>
-          </motion.div>
+                {/* Micro-Features */}
+                <div className="mt-12 grid grid-cols-2 gap-6 border-t border-slate-800 pt-8">
+                    <div>
+                        <h4 className="text-white font-semibold mb-1 flex items-center gap-2">
+                            <Layers size={14} className="text-indigo-400" /> Modular Design
+                        </h4>
+                        <p className="text-xs text-slate-500">Components that scale with you.</p>
+                    </div>
+                    <div>
+                        <h4 className="text-white font-semibold mb-1 flex items-center gap-2">
+                            <Code size={14} className="text-emerald-400" /> Full Ownership
+                        </h4>
+                        <p className="text-xs text-slate-500">No black boxes. You own the code.</p>
+                    </div>
+                </div>
+            </div>
 
-          {/* --- RIGHT: 3D Animation --- */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="hidden lg:block relative"
-          >
-            <SolutionOrbit />
-          </motion.div>
+            {/* --- RIGHT: The Isometric Visual --- */}
+            <div className="relative flex items-center justify-center lg:justify-end">
+                {/* Background Glow behind the stack */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-indigo-500/20 blur-[80px] rounded-full pointer-events-none" />
+                
+                <IsometricStack showCode={isTechView} />
+                
+                {/* Floating "Instruction" */}
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 2 }}
+                    className="absolute bottom-10 right-10 text-[10px] text-slate-600 font-mono hidden lg:block"
+                >
+                    &lt; Hover to tilt /&gt;
+                </motion.div>
+            </div>
 
         </div>
       </div>

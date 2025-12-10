@@ -38,7 +38,6 @@ export default function ServicesPage() {
       <SolutionsHero/>
       <IndustryProblems/>
       <CoreSolutions/>
-      <TechStackSlide/>
     </main>
   );
 }

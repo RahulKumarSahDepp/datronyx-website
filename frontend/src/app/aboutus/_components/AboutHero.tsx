@@ -55,7 +55,7 @@ export default function AboutHero() {
   }, []);
 
   return (
-    <section className="relative w-full min-h-[90vh] flex flex-col justify-center items-center overflow-hidden bg-[#020617]">
+    <section className="relative w-full min-h-[90vh] flex flex-col justify-center items-center overflow-hidden bg-[#020617] pt-24">
       
       {/* --- 1. CINEMATIC BACKGROUND --- */}
       <div className="absolute inset-0 pointer-events-none perspective-[500px]">

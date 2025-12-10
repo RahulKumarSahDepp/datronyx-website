@@ -7,18 +7,18 @@ import {
     HeartPulse, 
     ShoppingCart, 
     Factory, 
-    Signal, 
     Zap, 
     Briefcase, 
     AlertTriangle, 
-    Lightbulb, 
+    CheckCircle2,
     TrendingUp, 
     ChevronDown,
-    Sparkles
+    Sparkles,
+    ShieldAlert,
+    Cpu
 } from "lucide-react";
 
-// --- 1. SCOPED BACKGROUND COMPONENTS ---
-// These are positioned 'absolute' to stay ONLY within this section
+// --- 1. BACKGROUND EFFECTS ---
 
 const StarBackground = () => {
   const [stars, setStars] = useState<{ id: number; top: string; left: string; size: number; opacity: number }[]>([]);
@@ -64,190 +64,181 @@ const TechnicalGrid = () => (
 
 const VintageOverlay = () => (
   <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
-    <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay">
-      <svg className="w-full h-full"><filter id="noiseFilterSection"><feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#noiseFilterSection)" /></svg>
-    </div>
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#020617_100%)]" />
   </div>
 );
 
-// --- 2. DATA ---
+// --- 2. REFINED DATA (PLAIN ENGLISH & HIGH IMPACT) ---
 
 const industryData = [
     {
         title: "Finance & Banking",
+        tagline: "Risk & Fraud",
         icon: Landmark,
-        challenges: "Regulatory compliance, fraud detection, risk assessment.",
-        solutions: "Predictive modeling, real-time fraud analytics, BI dashboards.",
-        outcomes: "Improved risk management, higher compliance, faster insights.",
         color: "blue",
+        // The Pain (Simple)
+        painPoint: "Fraudsters are getting smarter, and manual checks are slowing down your good customers.",
+        // The Fix (The "Engine")
+        solution: "We build AI that spots fake transactions in milliseconds, blocking thieves while letting real customers pass instantly.",
+        // The Win (Outcome)
+        outcome: "Zero false positives and automated compliance reporting.",
     },
     {
-        title: "Healthcare & Life Sciences",
+        title: "Healthcare",
+        tagline: "Patient Data",
         icon: HeartPulse,
-        challenges: "Patient care optimization, operational efficiency.",
-        solutions: "Predictive analytics, AI diagnostics, data governance.",
-        outcomes: "Enhanced care, reduced costs, compliance-ready data.",
         color: "emerald",
+        painPoint: "Doctors are drowning in paperwork and disjointed data systems instead of treating patients.",
+        solution: "We unify patient records into one simple dashboard and predict health risks before they become emergencies.",
+        outcome: "30% less admin time and improved patient recovery rates.",
     },
     {
         title: "Retail & E-Commerce",
+        tagline: "Inventory & Sales",
         icon: ShoppingCart,
-        challenges: "Demand forecasting, inventory optimization, personalization.",
-        solutions: "Sales models, recommendation engines, real-time dashboards.",
-        outcomes: "Increased sales, reduced stockouts, better experiences.",
         color: "pink",
+        painPoint: "You're either running out of best-sellers or stuck with warehouses full of unsold items.",
+        solution: "Our demand engine predicts exactly what will sell next week based on trends, weather, and history.",
+        outcome: "Stockouts eliminated and profit margins optimized.",
     },
     {
         title: "Manufacturing",
+        tagline: "Operations",
         icon: Factory,
-        challenges: "Inefficiencies, equipment downtime, supply chain issues.",
-        solutions: "Predictive maintenance, process optimization, IoT analytics.",
-        outcomes: "Reduced downtime, optimized production, cost savings.",
         color: "amber",
-    },
-    {
-        title: "Telecommunications",
-        icon: Signal,
-        challenges: "Network reliability, customer churn, service optimization.",
-        solutions: "Predictive churn models, network analytics, MLOps.",
-        outcomes: "Improved retention, enhanced performance, data-driven expansion.",
-        color: "purple",
+        painPoint: "Machines break unexpectedly, halting the entire production line and costing thousands per hour.",
+        solution: "We install 'listening' AI that detects mechanical issues days before the machine actually fails.",
+        outcome: "Zero unplanned downtime and optimized maintenance schedules.",
     },
     {
         title: "Energy & Utilities",
+        tagline: "Distribution",
         icon: Zap,
-        challenges: "Demand forecasting, resource optimization, compliance.",
-        solutions: "Consumption models, AI-driven maintenance, sustainability analytics.",
-        outcomes: "Optimized distribution, cost savings, compliance assurance.",
         color: "cyan",
+        painPoint: "Wasting energy during low-demand hours and struggling to meet spikes in usage.",
+        solution: "Smart grid analytics that balance load automatically, saving energy and preventing blackouts.",
+        outcome: "Lower operational costs and a greener footprint.",
     },
     {
         title: "Government",
+        tagline: "Public Service",
         icon: Briefcase,
-        challenges: "Efficient public services, data transparency, citizen engagement.",
-        solutions: "Data strategy, predictive analytics for allocation.",
-        outcomes: "Improved services, actionable insights, optimized resources.",
         color: "indigo",
+        painPoint: "Slow, bureaucratic processes and data silos that prevent efficient public service.",
+        solution: "Secure data pipelines that automate resource allocation and improve transparency.",
+        outcome: "Faster citizen services and audit-ready transparency.",
     },
 ];
 
-// --- 3. SUB-COMPONENTS ---
+// --- 3. UI COMPONENTS ---
 
-interface DetailBlockProps {
-    Icon: React.ElementType;
-    title: string;
-    content: string;
-    colorTheme: { text: string };
-}
-
-const DetailBlock: React.FC<DetailBlockProps> = ({ Icon, title, content, colorTheme }) => (
-    <div className="flex items-start space-x-4 p-3 rounded-lg bg-slate-950/30 border border-slate-800/50 hover:border-slate-700 transition-colors">
-        <div className={`mt-1 p-1.5 rounded bg-slate-900 ${colorTheme.text}`}>
-            <Icon className="w-4 h-4" />
-        </div>
-        <div>
-            <h5 className={`font-bold text-xs uppercase tracking-wider mb-1 ${colorTheme.text}`}>{title}</h5>
-            <p className="text-slate-300 text-sm leading-relaxed">{content}</p>
-        </div>
-    </div>
-);
-
-// Define the shape of our theme object for TypeScript safety
-interface ThemeStyles {
-    border: string;
-    bg: string;
-    text: string;
-    glow: string;
-}
-
-interface IndustryCardProps {
-    data: typeof industryData[0];
-    isActive: boolean;
-    onToggle: () => void;
-}
-
-const IndustryCard: React.FC<IndustryCardProps> = ({ data, isActive, onToggle }) => {
-    
-    // 1. Define the color map
-    // We explicitly type the keys to match the possible colors in your data
-    const colorStyles: Record<string, ThemeStyles> = {
-        blue:    { border: 'border-blue-500',    bg: 'bg-blue-500/10',    text: 'text-blue-400',    glow: 'shadow-blue-500/20' },
-        emerald: { border: 'border-emerald-500', bg: 'bg-emerald-500/10', text: 'text-emerald-400', glow: 'shadow-emerald-500/20' },
-        pink:    { border: 'border-pink-500',    bg: 'bg-pink-500/10',    text: 'text-pink-400',    glow: 'shadow-pink-500/20' },
-        amber:   { border: 'border-amber-500',   bg: 'bg-amber-500/10',   text: 'text-amber-400',   glow: 'shadow-amber-500/20' },
-        purple:  { border: 'border-purple-500',  bg: 'bg-purple-500/10',  text: 'text-purple-400',  glow: 'shadow-purple-500/20' },
-        cyan:    { border: 'border-cyan-500',    bg: 'bg-cyan-500/10',    text: 'text-cyan-400',    glow: 'shadow-cyan-500/20' },
-        indigo:  { border: 'border-indigo-500',  bg: 'bg-indigo-500/10',  text: 'text-indigo-400',  glow: 'shadow-indigo-500/20' },
+// Helper for dynamic colors
+const getColorClasses = (color: string) => {
+    const map: Record<string, any> = {
+        blue:    { border: 'border-blue-500',    bg: 'bg-blue-500/10',    text: 'text-blue-400',    glow: 'shadow-blue-500/20', gradient: 'from-blue-500 to-indigo-500' },
+        emerald: { border: 'border-emerald-500', bg: 'bg-emerald-500/10', text: 'text-emerald-400', glow: 'shadow-emerald-500/20', gradient: 'from-emerald-500 to-teal-500' },
+        pink:    { border: 'border-pink-500',    bg: 'bg-pink-500/10',    text: 'text-pink-400',    glow: 'shadow-pink-500/20', gradient: 'from-pink-500 to-rose-500' },
+        amber:   { border: 'border-amber-500',   bg: 'bg-amber-500/10',   text: 'text-amber-400',   glow: 'shadow-amber-500/20', gradient: 'from-amber-500 to-orange-500' },
+        cyan:    { border: 'border-cyan-500',    bg: 'bg-cyan-500/10',    text: 'text-cyan-400',    glow: 'shadow-cyan-500/20', gradient: 'from-cyan-500 to-sky-500' },
+        indigo:  { border: 'border-indigo-500',  bg: 'bg-indigo-500/10',  text: 'text-indigo-400',  glow: 'shadow-indigo-500/20', gradient: 'from-indigo-500 to-violet-500' },
     };
+    return map[color] || map.blue;
+};
 
-    // 2. Safe Access with Fallback
-    // If data.color is not found in colorStyles, default to 'blue' to prevent crashes/errors
-    const theme = colorStyles[data.color] || colorStyles.blue;
+const IndustryCard = ({ data, isActive, onToggle }: { data: typeof industryData[0], isActive: boolean, onToggle: () => void }) => {
+    const theme = getColorClasses(data.color);
 
     return (
         <motion.div
-            layout 
+            layout
             onClick={onToggle}
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
+            initial={false}
+            animate={isActive ? "open" : "closed"}
             whileHover={{ scale: 1.01 }}
-            transition={{ layout: { duration: 0.3, type: "spring", stiffness: 300, damping: 30 } }}
             className={`
-                relative overflow-hidden rounded-xl border cursor-pointer backdrop-blur-md h-fit
+                relative overflow-hidden rounded-2xl border cursor-pointer backdrop-blur-xl transition-all duration-500
                 ${isActive 
-                    ? `${theme.border} bg-slate-900/80 shadow-lg ${theme.glow}` 
-                    : `border-slate-800 bg-slate-900/40 hover:border-slate-600 hover:bg-slate-900/60`
+                    ? `border-l-4 ${theme.border} bg-[#0f1629] shadow-2xl ${theme.glow}` 
+                    : `border-slate-800 border-l-transparent bg-slate-900/40 hover:bg-slate-800/60`
                 }
             `}
         >
-            {/* Header */}
-            <div className={`p-5 flex items-center justify-between ${isActive ? theme.bg : 'bg-transparent'}`}>
-                <div className="flex items-center gap-4">
-                    <div className={`p-2 rounded-lg bg-slate-950 border border-slate-800 ${theme.text}`}>
-                        <data.icon className="w-6 h-6" />
+            {/* Header Section */}
+            <div className="p-6 flex items-center justify-between relative z-10">
+                <div className="flex items-center gap-5">
+                    {/* Icon Box */}
+                    <div className={`
+                        w-12 h-12 rounded-xl flex items-center justify-center border transition-colors duration-300
+                        ${isActive ? `bg-slate-900 ${theme.border} ${theme.text}` : 'bg-slate-900 border-slate-700 text-slate-500'}
+                    `}>
+                        <data.icon size={24} />
                     </div>
-                    <h3 className={`text-lg font-bold transition-colors ${isActive ? 'text-white' : 'text-slate-200'}`}>
-                        {data.title}
-                    </h3>
+
+                    <div>
+                        <h3 className={`text-xl font-bold transition-colors ${isActive ? 'text-white' : 'text-slate-300'}`}>
+                            {data.title}
+                        </h3>
+                        <p className={`text-xs font-mono uppercase tracking-wider mt-1 ${isActive ? theme.text : 'text-slate-500'}`}>
+                            {data.tagline}
+                        </p>
+                    </div>
                 </div>
-                <ChevronDown 
-                    className={`w-5 h-5 transition-transform duration-300 ${isActive ? `rotate-180 ${theme.text}` : 'text-slate-500'}`} 
-                />
+
+                <div className={`
+                    w-8 h-8 rounded-full flex items-center justify-center border transition-all duration-300
+                    ${isActive ? `${theme.border} ${theme.bg} ${theme.text} rotate-180` : 'border-slate-700 bg-slate-900 text-slate-500'}
+                `}>
+                    <ChevronDown size={16} />
+                </div>
             </div>
 
-            {/* Accordion Body */}
-            <AnimatePresence mode="wait">
+            {/* Expanded Content - "The Problem vs The Solution" */}
+            <AnimatePresence>
                 {isActive && (
                     <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        transition={{ duration: 0.4, ease: "easeInOut" }}
                     >
-                        <div className="p-5 pt-0 space-y-4 border-t border-slate-800/50 mt-2">
-                             {/* Separator */}
-                            <div className="w-full h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent mb-4" />
+                        <div className="px-6 pb-8 pt-2">
+                            <div className="w-full h-px bg-slate-800 mb-6" />
                             
-                            <DetailBlock 
-                                Icon={AlertTriangle} 
-                                title="Challenges" 
-                                content={data.challenges} 
-                                colorTheme={theme}
-                            />
-                            <DetailBlock 
-                                Icon={Lightbulb} 
-                                title="Solutions" 
-                                content={data.solutions} 
-                                colorTheme={theme}
-                            />
-                            <DetailBlock 
-                                Icon={TrendingUp} 
-                                title="Outcomes" 
-                                content={data.outcomes} 
-                                colorTheme={theme}
-                            />
+                            <div className="grid gap-6">
+                                {/* 1. The Pain Point (Red/Alert Theme) */}
+                                <div className="flex gap-4">
+                                    <div className="mt-1">
+                                        <ShieldAlert className="w-5 h-5 text-rose-400" />
+                                    </div>
+                                    <div>
+                                        <h4 className="text-xs font-bold text-rose-400 uppercase tracking-wide mb-1">The Struggle</h4>
+                                        <p className="text-slate-400 text-sm leading-relaxed">
+                                            {data.painPoint}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* 2. The Solution (Theme Color) */}
+                                <div className="flex gap-4">
+                                    <div className="mt-1">
+                                        <Cpu className={`w-5 h-5 ${theme.text}`} />
+                                    </div>
+                                    <div>
+                                        <h4 className={`text-xs font-bold uppercase tracking-wide mb-1 ${theme.text}`}>Datronyx Fix</h4>
+                                        <p className="text-white text-sm leading-relaxed font-medium">
+                                            {data.solution}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* 3. The Outcome (Green/Success) */}
+                                <div className="mt-2 p-3 rounded-lg bg-emerald-950/30 border border-emerald-500/20 flex items-center gap-3">
+                                    <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                                    <span className="text-emerald-200 text-sm font-semibold">
+                                        Result: {data.outcome}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </motion.div>
                 )}
@@ -258,29 +249,28 @@ const IndustryCard: React.FC<IndustryCardProps> = ({ data, isActive, onToggle })
 
 // --- 4. MAIN COMPONENT ---
 
-export default function IndustriesSection() {
-    const [activeIndex, setActiveIndex] = useState<number | null>(null);
+export default function IndustriesDetailed() {
+    // Default open first item for better UX
+    const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
     const handleToggle = (index: number) => {
         setActiveIndex(index === activeIndex ? null : index);
     };
 
     return (
-        <section className="relative w-full py-24 overflow-hidden bg-[#020617]">
+        <section className="relative w-full py-24 bg-[#020617] overflow-hidden">
             
-            {/* --- Scoped Background Layers --- */}
+            {/* Backgrounds */}
             <TechnicalGrid />
             <StarBackground />
             <VintageOverlay />
             
-            <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-blue-900/10 blur-[100px] rounded-full pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-indigo-900/10 blur-[100px] rounded-full pointer-events-none" />
-
-            {/* --- Content --- */}
-            <div className="relative z-20 max-w-7xl mx-auto px-6 md:px-12">
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-900/10 blur-[120px] rounded-full pointer-events-none" />
+            
+            <div className="relative z-20 max-w-6xl mx-auto px-6">
                 
-                {/* Section Header */}
-                <div className="text-center mb-16">
+                {/* Header */}
+                <div className="text-center mb-16 max-w-3xl mx-auto">
                     <motion.div 
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -288,8 +278,8 @@ export default function IndustriesSection() {
                         className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 backdrop-blur-md mb-6"
                     >
                         <Sparkles className="w-3 h-3 text-indigo-400" />
-                        <span className="text-xs font-semibold text-indigo-200 uppercase tracking-widest">
-                            Sectors We Serve
+                        <span className="text-xs font-bold text-indigo-200 uppercase tracking-widest">
+                            Real World Impact
                         </span>
                     </motion.div>
                     
@@ -297,12 +287,11 @@ export default function IndustriesSection() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.1 }}
-                        className="text-3xl md:text-5xl font-bold text-white mb-6"
+                        className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight"
                     >
-                        Tailored Solutions for <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
-                            Every Industry Vertical
+                        We Don't Just Process Data. <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+                            We Solve Business Pain.
                         </span>
                     </motion.h2>
                     
@@ -310,16 +299,14 @@ export default function IndustriesSection() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                        className="text-slate-400 max-w-2xl mx-auto text-lg"
+                        className="text-slate-400 text-lg"
                     >
-                        Datronyx architects intelligent, compliant, and high-impact solutions customized for the unique regulatory and operational needs of your industry.
+                        Every industry has unique bottlenecks. We engineer custom intelligence layers to uncork them.
                     </motion.p>
                 </div>
 
-                {/* Cards Grid */}
-                {/* 'items-start' is crucial here: prevents adjacent cards from stretching when one opens */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-5xl mx-auto items-start">
+                {/* Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
                     {industryData.map((data, index) => (
                         <IndustryCard
                             key={index}

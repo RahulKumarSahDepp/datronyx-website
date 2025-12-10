@@ -2,7 +2,7 @@
 import TechStackSlide from '@/components/TechStackSlide';
 import KnowledgeHero from './_components/HeroSection';
 import IntroductionSection from './_components/Introduction';
-import BlogListing from './_components/BlogListing'; // <--- Import the new component
+import BlogListing from './_components/BlogListing';
 import SectionSeparator from '@/components/SectionSeparator';
 import FAQSection from '@/components/FaqSection';
 
@@ -25,12 +25,10 @@ export default function ServicesPage() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(jsonLd),
         }}
-      />
-        {/* <KnowledgeHero/> */}
-        {/* <IntroductionSection/> */}
+      />  
+        <KnowledgeHero />
         <BlogListing /> 
         <SectionSeparator/>
-        <TechStackSlide/>
         <SectionSeparator/>
         <FAQSection/>
     </main>

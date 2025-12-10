@@ -1,6 +1,4 @@
 import ServiceHeroSection from './_components/ServiceHeroSection';
-import CapabilitiesSection from '@/components/CapabilitiesSection';
-import ServiceGridSection from '../../components/serviceGridSection';
 import FaqSection from '@/components/FaqSection';
 import PredictiveModelingBenefits from './_components/PredictiveModeling/PredictiveModelingBenefits';
 import PredictiveModelingHero from './_components/PredictiveModeling/PredictiveModelingHero';
@@ -18,10 +16,13 @@ import MLOpsHero from './_components/MlOps/MLOpsHero';
 import MLOpsCapabilities from './_components/MlOps/MLOpsCapabilities';
 import MLOpsDeliverables from './_components/MlOps/MLOpsDeliverables';
 import MLOpsProcess from './_components/MlOps/MLOpsProcess';
-import MLOpsCTA from './_components/MlOps/MLOpsCTA';
 import SectionSeparator from '@/components/SectionSeparator';
-import TechStackSlide from '@/components/TechStackSlide';
 import ServicesSection from '@/components/ServicesSection';
+import WhyDatronyx from '@/components/BenefitsSection';
+import AI_MachineLearning from './_components/AI_MachineLearning';
+import CTA_Goldmine from './_components/CTA_Goldmine';
+import ServicesGridSection from './_components/ServicesGrid';
+import IndustrySolutions from './_components/IndustryServices';
 
 export default function ServicesPage() {
   const jsonLd = {
@@ -32,7 +33,7 @@ export default function ServicesPage() {
       {
         "@type": "Service",
         name: "Data Analytics Services",
-        url: "https://datronyx.com/services" // /data-analytics
+        url: "https://datronyx.com/services" // data-analytics
       },
       {
         "@type": "Service",
@@ -62,9 +63,13 @@ export default function ServicesPage() {
       />
 
       <ServiceHeroSection />
-      <CapabilitiesSection/>
+      <ServicesGridSection />
+      <IndustrySolutions />
+      <WhyDatronyx/>
       <ServicesSection/>
-      <PredictiveModelingHero/>
+      <CTA_Goldmine/>
+      {/* <AI_MachineLearning/> */}
+      {/* <PredictiveModelingHero/>
       <PredictiveModelingBenefits/>
       <PredictiveModelingDeliverables/>
       <DataStrategyHero/>
@@ -79,9 +84,7 @@ export default function ServicesPage() {
       <MLOpsHero/>
       <MLOpsCapabilities/>
       <MLOpsDeliverables/>
-      <MLOpsProcess/>
-      <MLOpsCTA/>
-      <TechStackSlide/>
+      <MLOpsProcess/> */}
       <SectionSeparator/>
       <FaqSection />
     </main>

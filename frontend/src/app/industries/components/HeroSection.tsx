@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-// Added 'Variants' to the import below
+import Link from "next/link"; // Import Link
 import { motion, Variants } from "framer-motion";
 import { 
   ArrowRight, 
@@ -104,7 +104,6 @@ const VintageOverlay = () => {
 
 // --- 2. Animation Variants ---
 
-// Explicitly typing these as 'Variants' fixes the typescript error on 'y'
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -247,33 +246,43 @@ export default function IndustriesHero() {
             variants={containerVariants}
             className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0"
           >
+            {/* BADGE */}
             <motion.div variants={textVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-indigo-500/20 bg-indigo-500/5 backdrop-blur-sm mb-8">
               <Sparkles className="w-4 h-4 text-indigo-300" />
               <span className="text-indigo-200 text-xs font-semibold tracking-widest uppercase">
-                Industry Expertise
+                Vertical Intelligence
               </span>
             </motion.div>
 
+            {/* HEADLINE */}
             <motion.h1 variants={textVariants} className="text-4xl md:text-5xl lg:text-7xl font-bold text-white leading-tight mb-6 tracking-tight">
-              Data Solutions <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-violent-300 to-blue-700">
-                Beyond Boundaries.
+              Domain-Specific <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-violet-400 to-blue-700">
+                Decision Engines.
               </span>
             </motion.h1>
 
+            {/* SUBTEXT */}
             <motion.p variants={textVariants} className="text-lg text-slate-400 mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0 font-light">
-              Transforming raw data into strategic assets across Finance, Healthcare, Retail, and Manufacturing.
+              Generic models fail in specific contexts. We engineer compliant, high-velocity data layers tailored to the unique physics of Finance, Healthcare, Retail, and Manufacturing.
             </motion.p>
 
+            {/* ACTION BUTTONS (Functional Links) */}
             <motion.div variants={textVariants} className="flex flex-wrap gap-4 justify-center lg:justify-start">
-              <button className="group relative inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white transition-all duration-200 bg-indigo-600 rounded-full focus:outline-none hover:bg-indigo-500 hover:shadow-[0_0_20px_rgba(79,70,229,0.4)]">
-                Explore Industries
+              <Link 
+                href="/solutions"
+                className="group relative inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white transition-all duration-200 bg-indigo-600 rounded-full focus:outline-none hover:bg-indigo-500 hover:shadow-[0_0_20px_rgba(79,70,229,0.4)]"
+              >
+                Explore Solutions
                 <ArrowRight className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
-              </button>
+              </Link>
               
-              <button className="px-8 py-4 bg-transparent border border-slate-800 text-white font-medium rounded-full hover:border-indigo-400 hover:bg-indigo-950/30 transition-all duration-300">
+              <Link 
+                href="/contact"
+                className="px-8 py-4 bg-transparent border border-slate-800 text-white font-medium rounded-full hover:border-indigo-400 hover:bg-indigo-950/30 transition-all duration-300"
+              >
                 Schedule Consultation
-              </button>
+              </Link>
             </motion.div>
           </motion.div>
 

@@ -76,20 +76,21 @@ export default function Footer() {
           <div className="lg:col-span-5">
           
             <Link href="/" className="relative z-50 flex items-center gap-2 group"> 
-              <div className="relative w-[80px] h-[80px] -my-6 flex items-center justify-center">
-                  <Image
-                    src="/images/LogoDatro.png"
+              <div className="relative w-[120px] h-[50px] flex items-center justify-start">
+                <Image
+                    src="/images/Datronyxlogo.png"
                     alt="Datronyx Icon"
-                    width={80}
-                    height={80}
-                    className="object-contain h-full w-full transition-transform duration-300 group-hover:scale-110 brightness-110 contrast-125"
+                    width={120}
+                    height={50}
+                    className="object-contain h-full w-auto transition-transform duration-300 group-hover:scale-105 brightness-110"
                     priority
                   />
+                  <span className="text-2xl font-extrabold tracking-tighter text-white transition-colors duration-300 group-hover:text-blue-600 leading-none">
+                    DATRONYX
+                  </span>
               </div>
-              <span className="text-3xl font-extrabold tracking-tighter text-white transition-colors duration-300 group-hover:text-blue-600 leading-none">
-                DATRONYX
-              </span>
             </Link>
+
             <p className="text-slate-400 text-base leading-relaxed max-w-md mb-8 font-light">
               Architecting the <span className="text-indigo-400 font-medium">intelligence layer</span> for modern enterprises. We transform raw data into hardened assets that power autonomous AI.
             </p>

@@ -46,11 +46,9 @@ export default function Home() {
   return (
     <>
       <HeroSection />
-      <TechStackSlide/>
-      <CapabilitiesSection/>
       <CredibilitySection />
+      <CapabilitiesSection/>
       <ServicesSection />
-      <SolutionsSection />
       <ProcessSection />
       <BenefitsSection />
       <TechStackSection />

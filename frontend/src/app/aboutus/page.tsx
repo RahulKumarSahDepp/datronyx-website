@@ -34,14 +34,12 @@ export default function AboutUsPage() {
           __html: JSON.stringify(jsonLd),
         }}
         />
-        {/* <HeroSection /> */}
         <AboutHero/>
         <CapabilitiesSection/>
         <DatronyxTeam/>
         <OurStorySection />
         <OurValuesSection />
         <MissionVisionValues />
-        <TechStackSlide/>
         <SectionSeparator />
         <FAQSection />
       </main>
