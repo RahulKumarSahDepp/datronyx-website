@@ -39,8 +39,7 @@ export const metadata: Metadata = {
     siteName: "Datronyx",
     images: [
       {
-        // FIX: Remove './public' - Next.js serves public folder at root
-        url: "/Datronyx_Logo.png", 
+        url: "/Datronyxlogo.png", 
         width: 1200,
         height: 630,
         alt: "Datronyx – AI, ML & Data Science"
@@ -54,7 +53,7 @@ export const metadata: Metadata = {
     title: "Datronyx – AI, ML & Data Science",
     description:
       "Datronyx transforms raw data into intelligent systems. We offer advanced data analytics, data engineering, predictive modeling, AI development, and intelligence layers built for scale.",
-    images: ["/Datronyx_Logo.png"] // Updated to use the logo as fallback if no specific OG image exists
+    images: ["/Datronyxlogo.png"] 
   },
   authors: [{ name: "Datronyx Team" }],
   creator: "Datronyx",
