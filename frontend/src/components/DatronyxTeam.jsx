@@ -21,15 +21,15 @@ const teamMembers = [
     twitter: "#"  
   },
   { 
-    name: "Rahul Kumar Sah", 
-    role: "Lead Data Scientist", 
-    image: "/images/profile_picture.png",
+    name: "ARRIVING SOON", 
+    role: "Lead Software Engineer", 
+    image: "https://placehold.co/400x400/1e1b4b/6366f1?text=?",
     linkedin: "#",
     twitter: "#"
   },
   { 
     name: "ARRIVING SOON", 
-    role: "Security Architect", 
+    role: "Security Analyst", 
     image: "https://placehold.co/400x400/1e1b4b/6366f1?text=?",
     linkedin: "#",
     twitter: "#"

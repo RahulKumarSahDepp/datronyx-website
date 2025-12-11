@@ -211,7 +211,7 @@ export default function CoreValuesSection() {
                 </div>
                 
 
-[Image of data pipeline architecture diagram]
+{/* [Image of data pipeline architecture diagram] */}
 
               </motion.div>
             );

@@ -14,7 +14,7 @@ import {
 
 // --- TYPES ---
 interface RoadmapItem {
-  year: string;
+  // Year removed from interface
   title: string;
   category: string;
   description: string;
@@ -23,26 +23,26 @@ interface RoadmapItem {
 
 // --- CONTENT STRATEGY ---
 // 2025: THE ORIGIN (The "Why")
-// 2026: THE EXPANSION (The "What Next" - Services Expansion)
-// 2027: THE VISION (The "Ultimate Goal" - Automation)
+// THE EXPANSION (The "What Next")
+// THE VISION (The "Ultimate Goal")
 
 const futureSteps: RoadmapItem[] = [
   { 
-    year: "2026", 
+    // Year removed
     title: "Predictive Ecosystems", 
     category: "Service Expansion",
     description: "Moving beyond data storage to advanced Data Science. We plan to roll out proprietary predictive modeling services that allow clients to forecast market trends with 99% accuracy.", 
     icon: Network 
   },
   { 
-    year: "2027", 
+    // Year removed
     title: "Autonomous Intelligence", 
     category: "AI Evolution",
     description: "The shift from 'Human-in-the-loop' to 'Human-on-the-loop'. Deploying self-correcting AI agents that automate complex data engineering pipelines without manual oversight.", 
     icon: BrainCircuit 
   },
   { 
-    year: "Future", 
+    // Year removed
     title: "The Neural Enterprise", 
     category: "Global Standard",
     description: "Establishing Datronyx as the global infrastructure standard where Data Analytics and AI converge into a single, seamless operating system for the Fortune 500.", 
@@ -74,7 +74,6 @@ export default function DatronyxStory() {
     <section className="relative py-24 md:py-32 min-h-screen flex items-center bg-[#020617] overflow-hidden">
       
       {/* --- BACKGROUND FX --- */}
-      {/* Deep Tech Grid */}
       <div 
         className="absolute inset-0 z-0 pointer-events-none opacity-[0.03]"
         style={{
@@ -82,7 +81,6 @@ export default function DatronyxStory() {
           backgroundSize: '60px 60px',
         }}
       />
-      {/* Glow Orbs */}
       <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-indigo-900/10 rounded-full blur-[120px] pointer-events-none" />
 
@@ -106,7 +104,7 @@ export default function DatronyxStory() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
           
-          {/* --- LEFT COLUMN: THE 2025 STORY (The "Why") --- */}
+          {/* --- LEFT COLUMN: THE ORIGIN STORY --- */}
           <div className="lg:col-span-5 relative">
              <div className="lg:sticky lg:top-32">
                 <motion.div
@@ -116,14 +114,13 @@ export default function DatronyxStory() {
                   viewport={{ once: true }}
                   className="relative p-8 md:p-10 rounded-3xl bg-gradient-to-b from-slate-800/50 to-slate-900/50 border border-slate-700/50 backdrop-blur-xl overflow-hidden group"
                 >
-                  {/* Decorative Elements */}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
                   <Quote className="absolute top-8 left-8 text-slate-700/50 w-16 h-16 transform -scale-x-100" />
 
                   <div className="relative z-10 pt-4">
                     <div className="flex items-center gap-3 mb-6">
                       <span className="px-3 py-1 rounded-full bg-blue-500 text-white text-xs font-bold tracking-wider shadow-[0_0_15px_rgba(59,130,246,0.5)]">
-                        2025
+                        ORIGIN
                       </span>
                       <span className="text-slate-400 text-sm font-mono uppercase tracking-widest">The Inception</span>
                     </div>
@@ -157,18 +154,16 @@ export default function DatronyxStory() {
                     </div>
                   </div>
                   
-                  {/* Bottom Highlight Line */}
                   <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-transparent" />
                 </motion.div>
              </div>
           </div>
 
-          {/* --- RIGHT COLUMN: THE ROADMAP (The "Plan") --- */}
+          {/* --- RIGHT COLUMN: THE ROADMAP --- */}
           <div className="lg:col-span-7 flex flex-col justify-center">
             
             <div className="relative pl-6 md:pl-8 border-l border-slate-800 space-y-16">
               
-              {/* Connector Gradient Line */}
               <div className="absolute top-0 bottom-0 left-0 w-[2px] bg-gradient-to-b from-blue-500 via-indigo-500 to-transparent opacity-50" />
 
               {futureSteps.map((step, index) => (
@@ -181,25 +176,20 @@ export default function DatronyxStory() {
                   transition={{ delay: index * 0.2 }}
                   className="relative group"
                 >
-                  {/* Timeline Dot */}
                   <div className="absolute top-8 -left-[35px] md:-left-[43px] w-4 h-4 rounded-full bg-[#020617] border-2 border-indigo-500 group-hover:scale-125 group-hover:bg-indigo-500 transition-all duration-300 shadow-[0_0_10px_rgba(99,102,241,0.5)]" />
 
                   <div className="flex flex-col md:flex-row gap-6 items-start p-6 rounded-2xl transition-all duration-300 hover:bg-white/[0.02] border border-transparent hover:border-white/5">
                     
-                    {/* Icon Box */}
                     <div className="shrink-0 p-4 bg-slate-900 rounded-xl border border-slate-800 text-indigo-400 group-hover:text-white group-hover:bg-indigo-600 group-hover:border-indigo-500 transition-all duration-500 shadow-xl">
                       <step.icon size={28} />
                     </div>
 
-                    {/* Content */}
                     <div>
-                      <div className="flex items-center justify-between mb-2">
+                      {/* Year removed, Title layout adjusted */}
+                      <div className="mb-2">
                         <h4 className="text-2xl font-bold text-slate-200 group-hover:text-indigo-300 transition-colors">
                           {step.title}
                         </h4>
-                        <span className="text-4xl font-bold text-slate-800 group-hover:text-slate-700 transition-colors select-none">
-                          {step.year}
-                        </span>
                       </div>
                       
                       <p className="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-3 flex items-center gap-1">

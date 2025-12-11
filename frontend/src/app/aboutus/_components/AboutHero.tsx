@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-// FIX 1: Import 'Variants' type
 import { motion, useScroll, useTransform, Variants } from "framer-motion";
 import { 
   ArrowDown, 
@@ -11,7 +10,6 @@ import {
 } from "lucide-react";
 
 // --- ANIMATION VARIANTS ---
-// FIX 2: Explicitly type these variables so the red lines disappear
 const textVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { 
@@ -55,7 +53,8 @@ export default function AboutHero() {
   }, []);
 
   return (
-    <section className="relative w-full min-h-[90vh] flex flex-col justify-center items-center overflow-hidden bg-[#020617] pt-24">
+    // FIX APPLIED HERE: Changed pt-24 to pt-32 md:pt-48 for more clearance
+    <section className="relative w-full min-h-[90vh] flex flex-col justify-center items-center overflow-hidden bg-[#020617] pt-32 md:pt-48">
       
       {/* --- 1. CINEMATIC BACKGROUND --- */}
       <div className="absolute inset-0 pointer-events-none perspective-[500px]">
@@ -117,7 +116,7 @@ export default function AboutHero() {
             </span>
           </motion.h1>
 
-          {/* SUBTEXT - FIX 3: Cleaned up JSX Syntax here */}
+          {/* SUBTEXT */}
           <motion.p 
             variants={textVariants}
             className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed mb-12 font-light"
