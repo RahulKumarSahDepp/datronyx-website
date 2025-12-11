@@ -294,11 +294,18 @@ export default function SolutionsHeroUnique() {
   const [isTechView, setIsTechView] = useState(false);
 
   return (
-    <section className="relative w-full min-h-screen flex items-center bg-[#020617] overflow-hidden pt-24 pb-24 lg:pt-0 lg:pb-0">
+    <section 
+      // FIX APPLIED BELOW:
+      // 1. Removed 'items-center' (prevents content being forced up behind navbar)
+      // 2. Changed 'lg:pt-0' to 'lg:pt-48' (adds necessary space for the navbar)
+      // 3. Changed 'pt-24' to 'pt-32' (more breathing room on mobile)
+      className="relative w-full min-h-screen flex justify-center bg-[#020617] overflow-hidden pt-32 pb-24 lg:pt-48"
+    >
       
       <CircuitFlow />
 
-      <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
+      {/* Added flex-col and justify-center here to handle vertical alignment safely */}
+      <div className="max-w-7xl mx-auto px-6 w-full relative z-10 flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             
             {/* --- LEFT: The Architect's Pitch --- */}

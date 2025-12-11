@@ -228,7 +228,13 @@ const IndustryNexus = () => {
 
 export default function IndustriesHero() {
   return (
-    <section className="relative w-full min-h-screen flex items-center overflow-hidden bg-[#020617] pt-20 lg:pt-0">
+    <section 
+      // FIX APPLIED HERE:
+      // 1. Removed 'items-center' to stop vertical centering overlap.
+      // 2. Changed 'lg:pt-0' to 'lg:pt-48' to clear the navbar.
+      // 3. Changed 'pt-20' to 'pt-32' for better mobile spacing.
+      className="relative w-full min-h-screen flex justify-center overflow-hidden bg-[#020617] pt-32 pb-24 lg:pt-48"
+    >
       
       <TechnicalGrid />
       <StarBackground />
@@ -237,7 +243,8 @@ export default function IndustriesHero() {
       <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-indigo-900/10 blur-[100px] rounded-full pointer-events-none z-0" />
       <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-purple-900/10 blur-[100px] rounded-full pointer-events-none z-0" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-30">
+      {/* Added flex flex-col justify-center to the container to handle alignment nicely within the padded area */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-30 flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           
           <motion.div 
